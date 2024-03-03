@@ -1,0 +1,10 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.CodeforcesCodeforcesRound879Div.2.iml
+/contentModel.xml
+# Editor-based HTTP Client requests
+/httpRequests/
