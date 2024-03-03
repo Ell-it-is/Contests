@@ -19,6 +19,9 @@ const llong MNL = numeric_limits<llong>::min();
 const double MXD = numeric_limits<double>::max();
 const double MND = numeric_limits<double>::min();
 
+const int dx[4] = {-1, 0, 1, 0};
+const int dy[4] = {0, 1, 0, -1};
+
 // Define templates
 #define tcT template <class T>
 #define tcTU template <class T, class U>
@@ -697,7 +700,8 @@ int main() {
 
 int solve() {
   
-  
+
+  return solved;
 }
 
 /* ================= Notes ================== //
