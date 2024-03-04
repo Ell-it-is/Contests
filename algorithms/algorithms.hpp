@@ -1,4 +1,4 @@
-// TC: 2^n * n
+// TC: O(2^n * n)
 void AllSubsets(int n) {
   // go through all numbers -> 0...(2^n - 1)
   // Ex.: for n = 3
@@ -19,4 +19,18 @@ void AllSubsets(int n) {
   }
 }
 
+V<V<int>> adj_list; // Graph representation
+V<int> vis; // Keeps knowledge of verticies we already visited
+// TC: O(n + m), n: # of verticies, m: # of edges
+auto dfs = [&](auto&& dfs, int u) -> void {
+  // Says we visited vertex 'u'
+  vis[u] = true;
+  // Goes through all adjacent verticies of vertex 'u', let's call each 'v'
+  Each(adj_list[u], v) {
+    // If vertex 'v' was not visited yet, it is a candidate for dfs of vertex 'v'
+    if (!vis[v]) {
+      dfs(dfs, v);
+    }
+  }
+};
 

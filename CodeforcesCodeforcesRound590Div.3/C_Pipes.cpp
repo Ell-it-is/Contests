@@ -1,5 +1,5 @@
-// time-limit: 1000
-// problem-url: https://cses.fi/problemset/task/1193
+// time-limit: 2000
+// problem-url: https://codeforces.com/contest/1234/problem/C
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -48,7 +48,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Init(...)     OVERLOADED_MACRO(Init, __VA_ARGS__)
 #define Read(...)     OVERLOADED_MACRO(Read, __VA_ARGS__)
 #define Print(...)     OVERLOADED_MACRO(Print, __VA_ARGS__)
-#define PrintSP(...)     OVERLOADED_MACRO(PrintSP, __VA_ARGS__)
+#define PrintSp(...)     OVERLOADED_MACRO(PrintSp, __VA_ARGS__)
 #define PrintN(...)     OVERLOADED_MACRO(PrintN, __VA_ARGS__)
 
 // Loops
@@ -101,9 +101,9 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
 #define Print4(a, b, c, d) PrintReturn(WhenVoid(cout << a << b << c << d << "\n";));
 
-#define PrintSP2(a, b) PrintReturn(WhenVoid(cout << a << " " << b << "\n";));
-#define PrintSP3(a, b, c) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << "\n";));
-#define PrintSP4(a, b, c, d) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << " " << d << "\n";));
+#define PrintSp2(a, b) PrintReturn(WhenVoid(cout << a << " " << b << "\n";));
+#define PrintSp3(a, b, c) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << "\n";));
+#define PrintSp4(a, b, c, d) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << " " << d << "\n";));
 
 #define PrintN2(a, b) PrintReturn(WhenVoid(cout << a << "\n" << b << "\n";));
 #define PrintN3(a, b, c) PrintReturn(WhenVoid(cout << a << "\n" << b << "\n" << c << "\n";));
@@ -121,6 +121,7 @@ tcT using Q = queue<T>;
 tcT using ST = stack<T>;
 
 #define II <int, int>
+
 #define SS <string, string>
 #define IS <int, string>
 #define SI <string, int>
@@ -160,17 +161,19 @@ tcT using ST = stack<T>;
 #define PLD pair<llong, double>
 
 
-// Shortcuts
-#define Pb push_back
-#define Pob pop_back
-#define Ins insert
-#define Fi first
-#define Se second
-#define At(x) [x.first][x.second]
-#define Pair(x) { x.first, x.second }
+// Shortcuts of cpp code
+#define pb push_back
+#define pob pop_back
+#define ins insert
+#define fi first
+#define se second
+
+// Custom shortcut-functions
 #define Size(x) (int) x.size()
 #define All(x) x.begin(), x.end()
 #define Rall(x) x.rbegin(), x.rend()
+#define At(x) [x.first][x.second]
+#define Pair(x) { x.first, x.second }
 #define When(f) [&](auto x) { return f; }
 #define WhenAdj(f) [&](auto x, auto y) { return f; }
 #define WhenVoid(f) [&]() { f; }
@@ -632,12 +635,17 @@ template<class T, class U, class Z> auto MakeMap(Z &v) {
 
 // 2D array
 tcT auto Read2D(T n, T m) {
-  auto t = make_2D(n, m);
+  auto t = Make2D(n, m);
   Repeat (n) {
     Repeat (m, j) {
       cin >> t[i][j];
     }
   }
+  return t;
+}
+
+tcT auto Make2D(T n) {
+  V<V<T>> t(n);
   return t;
 }
 
@@ -649,6 +657,16 @@ tcT auto Make2D(T n, T m) {
 tcT auto Make2D(T n, T m, T def) {
   V<V<T>> t(n, V<T>(m, def));
   return t;
+}
+
+tcT auto ReadAdjList(T n, T m) {
+  auto adj_list = Make2D(n);
+  Repeat (m) {
+    Read(int, a, b);
+    adj_list[a].pb(b);
+    adj_list[b].pb(a);
+  }
+  return adj_list;
 }
 
 // --OUTPUT--
@@ -669,7 +687,7 @@ tcT int PrintVector(V<T> &v) {
   return 42;
 }
 
-tcT int PrintVectorSP(V<T> &v) {
+tcT int PrintVectorSp(V<T> &v) {
   int n = Size(v);
   Each(v, num) {
     cout << num << " ";
@@ -727,7 +745,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -753,74 +771,48 @@ int main() {
 
 
 int Solve() {
-  Read(int, n, m);
-  auto t = ReadVector<string>(n);
-  
-  PI start, end;
+  Read(int, n);
+  Read(string, s, t);
+  V<int> a(n), b(n);
   Repeat (n) {
-    Repeat (m, j) {
-      if (t[i][j] == 'A') start = { i, j };
-      if (t[i][j] == 'B') end = { i, j };
-    }
+    a[i] = ToNum(s[i]);
+    if (a[i] == 1) a[i] = 2;
   }
-  
-  Q<PI> q;
-  V<V<int>> used(n, V<int>(m));
-  V<V<PI>> parent(n, V<PI>(m));
-  V<V<int>> length(n, V<int>(m));
-  
-  q.push(start);
-  used At(start) = true;
-  parent At(start) = { -1, -1 };
-
-  while (!q.empty()) {
-    auto v = q.front();
-    q.pop();
-    Repeat (4) {
-      auto [x, y] = v;
-      x += dx[i];
-      y += dy[i];
-      if (IsValid(t, x, y) == false) continue;
-      if (t[x][y] == '#' || used[x][y]) continue;
-
-      used[x][y] = true;
-      PI u = { x, y };
-      q.push(u);
-      length At(u) = length At(v) + 1;
-      parent At(u) = Pair(v);
-    }
+  Repeat (n) {
+    b[i] = ToNum(t[i]);
+    if (b[i] == 1) b[i] = 2;
   }
 
-  if (!used At(end)) {
-    return false;
-  }
-  
-  string path = "";
-  PI v = Pair(end);
-  PI no_path = { -1, -1 };
-  while (v != no_path) {
-    auto [x, y] = v;
-    Repeat (4) {
-      int X = x - dx[i];
-      int Y = y - dy[i];
-      PI before = { X, Y };
-      if (parent[x][y] == before) path += dstr[i];
+  bool ans = true;
+  bool top = true;
+  Go (0, n - 1) {
+    if (i == n - 1 && top && a[i] == 2) {
+      ans = false;
+      __DEBUG__(i, a[i], b[i]);
+      break;
     }
-    v = parent[x][y];
+    if (top && a[i] != 2 && b[i] == 2) {
+      ans = false;
+      __DEBUG__(i, a[i], b[i]);
+      break;
+    }
+    if (!top && b[i] != 2 && a[i] == 2) {
+      ans = false;
+      __DEBUG__(i, a[i], b[i]);
+      break;
+    }
+    if ( (top && a[i] != 2) || (!top && b[i] != 2) ) {
+      top = !top;
+    }
   }
-  reverse(All(path));
+  if (top) ans = false;
   
-  Print("YES");
-  Print(Size(path));
-  return Print(path);
+  return ans;
 }
 
 /* ================= Notes ================== //
-   Each square could tell me the min # of steps it takes to get there from all his available neighbours
-   available neighbours = '.'
+    Change all types 1 to type 2
 
-   Better way is to think of the problem as a graph and search with BFS ->
-   that is find the path with the smallest number of edges, therefore shortest available path.
 */
 
 

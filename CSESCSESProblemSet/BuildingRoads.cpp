@@ -1,5 +1,5 @@
 // time-limit: 1000
-// problem-url: https://cses.fi/problemset/task/1193
+// problem-url: https://cses.fi/problemset/task/1666
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -121,6 +121,7 @@ tcT using Q = queue<T>;
 tcT using ST = stack<T>;
 
 #define II <int, int>
+
 #define SS <string, string>
 #define IS <int, string>
 #define SI <string, int>
@@ -160,17 +161,19 @@ tcT using ST = stack<T>;
 #define PLD pair<llong, double>
 
 
-// Shortcuts
-#define Pb push_back
-#define Pob pop_back
-#define Ins insert
-#define Fi first
-#define Se second
-#define At(x) [x.first][x.second]
-#define Pair(x) { x.first, x.second }
+// Shortcuts of cpp code
+#define pb push_back
+#define pob pop_back
+#define ins insert
+#define fi first
+#define se second
+
+// Custom shortcut-functions
 #define Size(x) (int) x.size()
 #define All(x) x.begin(), x.end()
 #define Rall(x) x.rbegin(), x.rend()
+#define At(x) [x.first][x.second]
+#define Pair(x) { x.first, x.second }
 #define When(f) [&](auto x) { return f; }
 #define WhenAdj(f) [&](auto x, auto y) { return f; }
 #define WhenVoid(f) [&]() { f; }
@@ -632,12 +635,17 @@ template<class T, class U, class Z> auto MakeMap(Z &v) {
 
 // 2D array
 tcT auto Read2D(T n, T m) {
-  auto t = make_2D(n, m);
+  auto t = Make2D(n, m);
   Repeat (n) {
     Repeat (m, j) {
       cin >> t[i][j];
     }
   }
+  return t;
+}
+
+tcT auto Make2D(T n) {
+  V<V<T>> t(n);
   return t;
 }
 
@@ -649,6 +657,16 @@ tcT auto Make2D(T n, T m) {
 tcT auto Make2D(T n, T m, T def) {
   V<V<T>> t(n, V<T>(m, def));
   return t;
+}
+
+tcT auto ReadAdjList(T n, T m) {
+  auto adj_list = Make2D(n);
+  Repeat (m) {
+    Read(int, a, b);
+    adj_list[a].pb(b);
+    adj_list[b].pb(a);
+  }
+  return adj_list;
 }
 
 // --OUTPUT--
@@ -669,7 +687,7 @@ tcT int PrintVector(V<T> &v) {
   return 42;
 }
 
-tcT int PrintVectorSP(V<T> &v) {
+tcT int PrintVectorSp(V<T> &v) {
   int n = Size(v);
   Each(v, num) {
     cout << num << " ";
@@ -754,73 +772,66 @@ int main() {
 
 int Solve() {
   Read(int, n, m);
-  auto t = ReadVector<string>(n);
+  auto adj_list = ReadAdjList(n + 1, m);
+  V<int> vis(n + 1);
+  V<int> connect;
+
+  auto dfs = [&](auto&& dfs, int u) -> void {
+    vis[u] = true;
+    Each(adj_list[u], v) {
+      if (!vis[v]) {
+        dfs(dfs, v);
+      }
+    }
+  };
   
-  PI start, end;
-  Repeat (n) {
-    Repeat (m, j) {
-      if (t[i][j] == 'A') start = { i, j };
-      if (t[i][j] == 'B') end = { i, j };
+  Go (1, n, u) {
+    if (!vis[u]) {
+      dfs(dfs, u);
+      connect.pb(u);
     }
   }
   
-  Q<PI> q;
-  V<V<int>> used(n, V<int>(m));
-  V<V<PI>> parent(n, V<PI>(m));
-  V<V<int>> length(n, V<int>(m));
-  
-  q.push(start);
-  used At(start) = true;
-  parent At(start) = { -1, -1 };
-
-  while (!q.empty()) {
-    auto v = q.front();
-    q.pop();
-    Repeat (4) {
-      auto [x, y] = v;
-      x += dx[i];
-      y += dy[i];
-      if (IsValid(t, x, y) == false) continue;
-      if (t[x][y] == '#' || used[x][y]) continue;
-
-      used[x][y] = true;
-      PI u = { x, y };
-      q.push(u);
-      length At(u) = length At(v) + 1;
-      parent At(u) = Pair(v);
-    }
-  }
-
-  if (!used At(end)) {
-    return false;
+  if (connect.empty()) {
+    return Print(0);
   }
   
-  string path = "";
-  PI v = Pair(end);
-  PI no_path = { -1, -1 };
-  while (v != no_path) {
-    auto [x, y] = v;
-    Repeat (4) {
-      int X = x - dx[i];
-      int Y = y - dy[i];
-      PI before = { X, Y };
-      if (parent[x][y] == before) path += dstr[i];
-    }
-    v = parent[x][y];
+  int sz = Size(connect) - 1;
+  Print(sz);
+  Repeat (sz) {
+    Print(connect[i] << " " << connect[i + 1]);
   }
-  reverse(All(path));
   
-  Print("YES");
-  Print(Size(path));
-  return Print(path);
+  return 42;
 }
 
 /* ================= Notes ================== //
-   Each square could tell me the min # of steps it takes to get there from all his available neighbours
-   available neighbours = '.'
+   Using DFS I could find the # of disconected trees = dt
 
-   Better way is to think of the problem as a graph and search with BFS ->
-   that is find the path with the smallest number of edges, therefore shortest available path.
+   The number of roads I need to build is then = roads = (dt - 1)
+
+   Then for each road I need to build I need to pick any 2 points from trees
+   I am connecting and print them out
+
+
+  DFS(origin)
+    stack st
+    st.push(origin)  
+    
+    while (!st.empty())
+      st.pop(origin)
+      vis[origin] = true
+      for (adj : origin)
+        if (!vis[adj])
+          DFS(adj)
+
+  vector<vertex> connect
+  for (vertex : verticies)
+    if (!vis[vertex])
+      DFS(vertex)
+      connect.pb(vertex)
+
+  
 */
 
 
