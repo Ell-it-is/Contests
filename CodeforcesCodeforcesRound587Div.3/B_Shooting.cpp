@@ -1,5 +1,5 @@
-// time-limit: 2000
-// problem-url: https://codeforces.com/contest/1234/problem/C
+// time-limit: 1000
+// problem-url: https://codeforces.com/contest/1216/problem/B
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -568,7 +568,7 @@ void Rotate(std::vector<int>& v, int left, int right, int moves) {
   std::reverse(v.begin() + left, v.begin() + right + 1);
 }
 
-template<class T> bool IsValid(V<T> &v, int idx) {
+template<class T> bool IsValid(T &v, int idx) {
   assert(!v.empty());
   
   return (idx >= 0 && idx < Size(v));
@@ -677,41 +677,70 @@ int PrintReturn(std::function<void()> lambda) {
 }
 
 // Vector
-tcT int PrintVector(V<T> &v) {
+tcT int PrintVector(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
-  Each(v, num) {
-    cout << num;
-  }
-  cout << "\n";
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
   
-  return 42;
-}
-
-tcT int PrintVectorSp(V<T> &v) {
-  int n = Size(v);
-  Each(v, num) {
-    cout << num << " ";
+  if (from == -1 && to == -1) {
+    Each (v) cout << v[i];
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i];
+  } else {
+    Go (from, to) cout << v[i];
   }
+  
   cout << "\n";
-
   return 42;
 }
 
-tcT int PrintVectorN(V<T> &v) {
+tcT int PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
-  Each(v, num) {
-    cout << num << "\n";
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (v) cout << v[i] << " ";
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i] << " ";
+  } else {
+    Go (from, to) cout << v[i] << " ";
+  }
+  
+  cout << "\n";
+  return 42;
+}
+
+tcT int PrintVectorN(V<T> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (v) Print(v[i]);
+  } else if (from == -1) {
+    Go (from, n - 1) Print(v[i]);
+  } else {
+    Go (from, to) Print(v[i]);
   }
 
   return 42;
 }
 
 // Vector pairs
-tcT int PrintPairs(V<pair<T, T>> &v) {
-  EachPair (v) {
-    cout << key << " " << val << "\n";
-  }
+tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
 
+  if (from == -1 && to == -1) {
+    EachPair (v) PrintSp(key, val);
+  } else if (from == -1) {
+    Go (from, n - 1) PrintSp(v[i].fi, v[i].se);
+  } else {
+    Go (from, to) PrintSp(v[i].fi, v[i].se);
+  }
+  
   return 42;
 }
 
@@ -745,7 +774,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -772,50 +801,31 @@ int main() {
 
 int Solve() {
   Read(int, n);
-  Read(string, s, t);
-  V<int> a(n), b(n);
+  V<PI> a(n);
   Repeat (n) {
-    a[i] = ToNum(s[i]);
-    if (a[i] == 1) a[i] = 2;
+    cin >> a[i].first;
+    a[i].second = i + 1;
   }
-  Repeat (n) {
-    b[i] = ToNum(t[i]);
-    if (b[i] == 1) b[i] = 2;
+  sort(Rall(a));
+
+  V<int> ans;
+  int shots = 0;
+  int x = 0;
+  EachPair (a, can, idx) {
+    shots += can * x + 1;
+    x++;
+    ans.pb(idx);
   }
   
-  
-  bool ans = true;
-  bool top = true;
-  Go (0, n - 1) {
-    if (i == n - 1 && top && a[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if (top && a[i] != 2 && b[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if (!top && b[i] != 2 && a[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if ( (top && a[i] != 2) || (!top && b[i] != 2) ) {
-      top = !top;
-    }
-  }
-  if (top) ans = false;
-  
-  return ans;
+  Print(shots);
+  PrintVectorSp(ans);
+
+  return 42;
 }
 
 /* ================= Notes ================== //
-    Change all types 1 to type 2
-
+   
 */
-
 
 
 

@@ -1,5 +1,5 @@
 // time-limit: 2000
-// problem-url: https://codeforces.com/contest/1234/problem/C
+// problem-url: https://codeforces.com/contest/1203/problem/D1
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -120,25 +120,25 @@ template<class T, int count> using A = array<T, count>;
 tcT using Q = queue<T>;
 tcT using ST = stack<T>;
 
-#define II <int, int>
+#define II int, int
 
-#define SS <string, string>
-#define IS <int, string>
-#define SI <string, int>
+#define SS string, string
+#define IS int, string
+#define SI string, int
 
-#define DD <double, double>
-#define ID <int, double>
-#define DI <double, int>
-#define SD <string, double>
-#define DS <double, string>
+#define DD double, double
+#define ID int, double
+#define DI double, int
+#define SD string, double
+#define DS double, string
 
-#define LL <llong, llong>
-#define IL <int, llong>
-#define LI <llong, int>
-#define SL <string, llong>
-#define LS <llong, string>
-#define DL <double, llong>
-#define LD <llong, double>
+#define LL llong, llong
+#define IL int, llong
+#define LI llong, int
+#define SL string, llong
+#define LS llong, string
+#define DL double, llong
+#define LD llong, double
 
 #define PI pair<int, int>
 
@@ -465,23 +465,17 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   return cnt;
 }
 
-tcT int MinPos(const V<T> &v) {
-  assert(!v.empty());
-  
-  return min_element(All(v)) - v.begin();
+tcT void Min(T &first, T &second) {
+  first = std::min(first, second);
 }
 
-tcT T Min(const V<T> &v) {
+tcT T GetMin(const V<T> &v) {
   assert(!v.empty());
   
   return *min_element(All(v));
 }
 
-tcT void Min(T &first, T &second) {
-  first = std::min(first, second);
-}
-
-tcT T SecondMin(V<T> &v) {
+tcT T GetMinSecond(V<T> &v) {
   assert(Size(v) > 1);
 
   int n = Size(v);
@@ -496,23 +490,23 @@ tcT T SecondMin(V<T> &v) {
   return second_min;
 }
 
-tcT int MaxPos(const V<T> &v) {
+tcT int GetMinPos(const V<T> &v) {
   assert(!v.empty());
   
-  return max_element(All(v)) - v.begin();
-}
-
-tcT T Max(const V<T> &v) {
-  assert(!v.empty());
-  
-  return *max_element(All(v));
+  return min_element(All(v)) - v.begin();
 }
 
 tcT void Max(T &first, T &second) {
   first = std::max(first, second);
 }
 
-tcT T SecondMax(V<T> &v) {
+tcT T GetMax(const V<T> &v) {
+  assert(!v.empty());
+  
+  return *max_element(All(v));
+}
+
+tcT T GetMaxSecond(V<T> &v) {
   assert(Size(v) > 1);
 
   int n = Size(v);
@@ -525,6 +519,12 @@ tcT T SecondMax(V<T> &v) {
     }
   }
   return second_max;
+}
+
+tcT int GetMaxPos(const V<T> &v) {
+  assert(!v.empty());
+  
+  return max_element(All(v)) - v.begin();
 }
 
 tcT T Avg(const V<T> &v) {
@@ -568,7 +568,7 @@ void Rotate(std::vector<int>& v, int left, int right, int moves) {
   std::reverse(v.begin() + left, v.begin() + right + 1);
 }
 
-template<class T> bool IsValid(V<T> &v, int idx) {
+template<class T> bool IsValid(T &v, int idx) {
   assert(!v.empty());
   
   return (idx >= 0 && idx < Size(v));
@@ -677,41 +677,70 @@ int PrintReturn(std::function<void()> lambda) {
 }
 
 // Vector
-tcT int PrintVector(V<T> &v) {
+tcT int PrintVector(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
-  Each(v, num) {
-    cout << num;
-  }
-  cout << "\n";
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
   
-  return 42;
-}
-
-tcT int PrintVectorSp(V<T> &v) {
-  int n = Size(v);
-  Each(v, num) {
-    cout << num << " ";
+  if (from == -1 && to == -1) {
+    Each (v) cout << v[i];
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i];
+  } else {
+    Go (from, to) cout << v[i];
   }
+  
   cout << "\n";
-
   return 42;
 }
 
-tcT int PrintVectorN(V<T> &v) {
+tcT int PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
-  Each(v, num) {
-    cout << num << "\n";
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (v) cout << v[i] << " ";
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i] << " ";
+  } else {
+    Go (from, to) cout << v[i] << " ";
+  }
+  
+  cout << "\n";
+  return 42;
+}
+
+tcT int PrintVectorN(V<T> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (v) Print(v[i]);
+  } else if (from == -1) {
+    Go (from, n - 1) Print(v[i]);
+  } else {
+    Go (from, to) Print(v[i]);
   }
 
   return 42;
 }
 
 // Vector pairs
-tcT int PrintPairs(V<pair<T, T>> &v) {
-  EachPair (v) {
-    cout << key << " " << val << "\n";
-  }
+tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
 
+  if (from == -1 && to == -1) {
+    EachPair (v) PrintSp(key, val);
+  } else if (from == -1) {
+    Go (from, n - 1) PrintSp(v[i].fi, v[i].se);
+  } else {
+    Go (from, to) PrintSp(v[i].fi, v[i].se);
+  }
+  
   return 42;
 }
 
@@ -745,7 +774,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -765,57 +794,31 @@ int main() {
       prev_time = end_time;
     }
   }
-
+  
   return 0;
 }
 
 
 int Solve() {
-  Read(int, n);
   Read(string, s, t);
-  V<int> a(n), b(n);
-  Repeat (n) {
-    a[i] = ToNum(s[i]);
-    if (a[i] == 1) a[i] = 2;
+  int n = Size(s);
+  int m = Size(t);
+  if (m == n) {
+    return Print(0);
   }
-  Repeat (n) {
-    b[i] = ToNum(t[i]);
-    if (b[i] == 1) b[i] = 2;
-  }
+  // n > m
+  V<int> pre(m), suf(m);
+  // pre - stores the index in 's' that is the LAST CHARACTER
+  // matching the i-th character in 't'
   
   
-  bool ans = true;
-  bool top = true;
-  Go (0, n - 1) {
-    if (i == n - 1 && top && a[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if (top && a[i] != 2 && b[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if (!top && b[i] != 2 && a[i] == 2) {
-      ans = false;
-      __DEBUG__(i, a[i], b[i]);
-      break;
-    }
-    if ( (top && a[i] != 2) || (!top && b[i] != 2) ) {
-      top = !top;
-    }
-  }
-  if (top) ans = false;
-  
-  return ans;
 }
 
+
+
 /* ================= Notes ================== //
-    Change all types 1 to type 2
-
+   
 */
-
 
 
 
