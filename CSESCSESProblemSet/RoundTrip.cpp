@@ -1,3 +1,5 @@
+// time-limit: 1000
+// problem-url: https://cses.fi/problemset/task/1669
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -189,8 +191,6 @@ string ToBString(int num) {
 }
 int FromBstring(string bstring) { return stoi(bstring, nullptr, 2); }
 
-tcT bool CkMin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
-tcT bool CkMax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 tcT bool Odd(T x) { return x % 2 != 0; }
 tcT bool Even(T x) { return x % 2 == 0; }
 tcT T Parity(T x) { return x % 2; }
@@ -463,7 +463,7 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   return cnt;
 }
 
-tcT void Min(T &first, T &second) {
+tcT void Min(T &first, T second) {
   first = std::min(first, second);
 }
 
@@ -494,7 +494,7 @@ tcT int GetMinPos(const V<T> &v) {
   return min_element(All(v)) - v.begin();
 }
 
-tcT void Max(T &first, T &second) {
+tcT void Max(T &first, T second) {
   first = std::max(first, second);
 }
 
@@ -763,3 +763,102 @@ tcTU int PrintMap(M<T, U> m) {
 
   return 42;
 }
+
+
+int Solve();
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  
+  int tt = 1;
+  //std::cin >> tt;
+  bool lowercase = false;
+  bool show_time = false;
+  
+  auto start_time = chrono::high_resolution_clock::now();
+  auto prev_time = start_time;
+  while (tt--) {
+    int solution = Solve();
+    if (solution == 1) std::cout << (lowercase ? "Yes" : "YES") << "\n";
+    if (solution == 0) std::cout << (lowercase ? "No" : "NO") << "\n";
+    
+    if (show_time) {
+      auto end_time = chrono::high_resolution_clock::now();
+      double time_taken = chrono::duration_cast<std::chrono::nanoseconds>(end_time - prev_time).count();
+      time_taken *= 1e-9;
+    
+      cout << "time = " << fixed << setprecision(9) << time_taken << "s" << std::endl;
+      prev_time = end_time;
+    }
+  }
+  
+  return 0;
+}
+
+
+int Solve() {
+  Read(int, n, m);
+  auto adj = ReadAdjList<int>(n + 1, m);
+
+  int origin = -1;
+  bool found = false;
+  auto dfs = [&](auto&& dfs, int u, V<int> &vis, ST<int> &st) -> void {
+    if (found) return;
+    vis[u] = true;
+    st.push(u);
+    Each (adj[u], v, i) {
+      if (!vis[v]) {
+        dfs(dfs, v, vis, st);
+      } else {
+        if (v == origin && Size(st) > 2 && !found) {
+          st.push(v);
+          found = true;
+          return;
+        }
+      }
+    }
+  };
+
+  Repeat (n, i, u) {
+    V<int> vis(n + 1);
+    ST<int> st;
+    origin = u;
+    found = false;
+    dfs(dfs, u, vis, st);
+    if (Size(st) > 3 && found) {
+      V<int> path;
+      while (!st.empty()) {
+        path.pb(st.top());
+        st.pop();
+      }
+      Print(Size(path));
+      return PrintVectorSp(path);
+    }
+  }
+
+  return Print("IMPOSSIBLE");
+}
+
+
+
+/* ================= Notes ================== //
+   
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

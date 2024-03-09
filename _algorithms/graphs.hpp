@@ -7,7 +7,7 @@ auto dfs = [&](auto&& dfs, int u) -> void {
   // Says we visited vertex 'u'
   vis[u] = true;
   // Goes through all adjacent verticies of vertex 'u', let's call each 'v'
-  Each(adj[u], v) {
+  Each(adj[u], v, i) {
     // If vertex 'v' was not visited yet, it is a candidate for dfs of vertex 'v'
     if (!vis[v]) {
       dfs(dfs, v);
@@ -37,6 +37,7 @@ while (!que.empty()) {
     }
   }
 }
+
 
 // ------- BFS + Parents + Lengths -------
 // TC: O(n + m), n: # of verticies, m: # of edges

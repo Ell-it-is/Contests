@@ -2,7 +2,7 @@
 #define TC TEST_CASE
 #define RQ REQUIRE
 #include "catch.hpp"
-#include "../template/template_functions.hpp"
+#include "../_template/template_functions.hpp"
 
 // Useful testing data
 int N = 7;

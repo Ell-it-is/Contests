@@ -4,7 +4,7 @@ using namespace std;
 using llong = long long;
 
 #ifdef DEBUG
-#include "../template/debug.h"
+#include "../_template/debug.h"
 #else
 #define __DEBUG__(x...)
 #endif
@@ -56,31 +56,23 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define RepeatBack3(cnt, i, pos) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
 #define RepeatBack2(cnt, i) RepeatBack3(cnt, i, pos)
 
-#define Go6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from <= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it < x.begin() + to + 1; ++it, ++i, ++pos, val = (it < x.begin() + to + 1 ? x[i] : val))
-#define Go5(from, to, x, val, i) Go6(from, to, x, val, i, pos)
 #define Go4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
 #define Go3(from, to, i) Go4(from, to, i, pos)
 
-#define GoBack6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from >= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it != x.begin() + to; --it, --i, --pos, val = (it != x.begin() + to ? x[i] : val))
-#define GoBack5(from, to, x, val, i) GoBack6(from, to, x, val, i, pos)
 #define GoBack4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
 #define GoBack3(from, to, i) GoBack4(from, to, i, pos)
 
-#define Each4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
-#define Each3(x, val, i) Each4(x, val, i, pos)
-#define Each2(x, i) Each4(x, val, i, pos)
+#define Each4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
+#define Each3(val, x, i) Each4(val, x, i, pos)
 
-#define EachBack4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
-#define EachBack3(x, val, i) EachBack4(x, val, i, pos)
-#define EachBack2(x, i) EachBack4(x, val, i, pos)
+#define EachBack4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
+#define EachBack3(val, x, i) EachBack4(val, x, i, pos)
 
-#define EachPair5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
-#define EachPair4(x, key, val, i) EachPair5(x, key, val, i, pos)
-#define EachPair2(x, i) EachPair4(x, key, val, i)
+#define EachPair5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
+#define EachPair4(key, val, x, i) EachPair5(key, val, x, i, pos)
 
-#define EachPairBack5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
-#define EachPairBack4(x, key, val, i) EachPairBack5(x, key, val, i, pos)
-#define EachPairBack2(x, i) EachPairBack4(x, key, val, i)
+#define EachPairBack5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
+#define EachPairBack4(key, val, x, i) EachPairBack5(key, val, x, i, pos)
 
 #define Init4(T, a, b, val) T a, b; a = val; b = val;
 #define Init5(T, a, b, c, val) T a, b, c; a = val; b = val; c = val;
@@ -176,9 +168,10 @@ tcT using ST = stack<T>;
 #define WhenAdj(f) [&](auto x, auto y) { return f; }
 #define WhenVoid(f) [&]() { f; }
 
-int ToNum(char c) { return int(c - '0'); }
-char ToChar(int num) { return char(num + '0'); }
-int ToNum(string s) { return stoi(s); }
+int LetterToInt(char c) { return int(c - 'a'); }
+int DigitToInt(char c) { return int(c - '0'); }
+char DigitToChar(int num) { return char(num + '0'); }
+int StringToInt(string s) { return stoi(s); }
 string ToBString(int num) {
   string bstring;
   while (num > 0) {
@@ -189,8 +182,6 @@ string ToBString(int num) {
 }
 int FromBstring(string bstring) { return stoi(bstring, nullptr, 2); }
 
-tcT bool CkMin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
-tcT bool CkMax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 tcT bool Odd(T x) { return x % 2 != 0; }
 tcT bool Even(T x) { return x % 2 == 0; }
 tcT T Parity(T x) { return x % 2; }
@@ -350,7 +341,7 @@ tcT int First(const V<T> &v, T t) {
 int First(string &s, char c) {
   assert(!s.empty());
   
-  Each (s, i) {
+  Each (c, s, i) {
     if (s[i] == c) return i;
   }
   return -1;
@@ -380,7 +371,7 @@ template<class T, class BinaryPredicate>
 int FirstAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Each(v, i) {
+  Each(num, v, i) {
     if (lambda(v[i], v[i + 1])) {
       return i;
     }
@@ -397,7 +388,7 @@ tcT int Last(const V<T> &v, T t) {
 int Last(string &s, char t) {
   assert(!s.empty());
   
-  EachBack (s, c, i) {
+  EachBack (c, s, i) {
     if (c == t) return i;
   }
   return -1;
@@ -419,8 +410,8 @@ template<class T, class UnaryPredicate>
 int Last(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  EachBack (v, i) {
-    if (lambda(v[i])) {
+  EachBack (num, v, i) {
+    if (lambda(num)) {
       return i;
     }
   }
@@ -463,7 +454,7 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   return cnt;
 }
 
-tcT void Min(T &first, T &second) {
+tcT void Min(T &first, T second) {
   first = std::min(first, second);
 }
 
@@ -494,7 +485,7 @@ tcT int GetMinPos(const V<T> &v) {
   return min_element(All(v)) - v.begin();
 }
 
-tcT void Max(T &first, T &second) {
+tcT void Max(T &first, T second) {
   first = std::max(first, second);
 }
 
@@ -627,7 +618,7 @@ tcT auto ReadPairs(int n) {
 // Map
 template<class T, class U, class Z> auto MakeMap(Z &v) {
   M<T, U> m;
-  Each(v, i) m[v[i]]++;
+  Each(num, v, i) m[num]++;
   return m;
 }
 
@@ -681,7 +672,7 @@ tcT int PrintVector(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) cout << v[i];
+    Each (num, v, i) cout << num;
   } else if (from == -1) {
     Go (from, n - 1, i) cout << v[i];
   } else {
@@ -698,7 +689,7 @@ tcT int PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) cout << v[i] << " ";
+    Each (num, v, i) cout << num << " ";
   } else if (from == -1) {
     Go (from, n - 1, i) cout << v[i] << " ";
   } else {
@@ -715,7 +706,7 @@ tcT int PrintVectorN(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) Print(v[i]);
+    Each (num, v, i) Print(num);
   } else if (from == -1) {
     Go (from, n - 1, i) Print(v[i]);
   } else {
@@ -732,7 +723,7 @@ tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
 
   if (from == -1 && to == -1) {
-    EachPair (v, i) PrintSp(key, val);
+    EachPair (key, val, v, i) PrintSp(key, val);
   } else if (from == -1) {
     Go (from, n - 1, i) PrintSp(v[i].fi, v[i].se);
   } else {
@@ -757,7 +748,7 @@ tcT int Print2D(V<V<T>> &t) {
 
 // Map
 tcTU int PrintMap(M<T, U> m) {
-  EachPair (m, i) {
+  EachPair (key, val, m, i) {
     cout << key << " " << val << "\n";
   }
 
@@ -772,7 +763,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -800,6 +791,7 @@ int main() {
 int Solve() {
   
   
+  
 }
 
 
@@ -807,7 +799,6 @@ int Solve() {
 /* ================= Notes ================== //
    
 */
-
 
 
 

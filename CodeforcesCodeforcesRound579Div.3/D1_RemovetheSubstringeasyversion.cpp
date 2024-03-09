@@ -1,12 +1,10 @@
-// time-limit: 2000
-// problem-url: https://codeforces.com/contest/1203/problem/D1
 
 #include <bits/stdc++.h>
 using namespace std;
 using llong = long long;
 
 #ifdef DEBUG
-#include "../template/debug.h"
+#include "../_template/debug.h"
 #else
 #define __DEBUG__(x...)
 #endif
@@ -52,37 +50,37 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define PrintN(...)     OVERLOADED_MACRO(PrintN, __VA_ARGS__)
 
 // Loops
-#define Repeat2(cnt, i) for (auto&& [i, pos] = std::tuple { 0, 1 }; i < cnt; i++, pos++)
-#define Repeat1(cnt) Repeat2(cnt, i)
+#define Repeat3(cnt, i, pos) for (auto&& [i, pos] = std::tuple { 0, 1 }; i < cnt; i++, pos++)
+#define Repeat2(cnt, i) Repeat3(cnt, i, pos)
 
-#define RepeatBack2(cnt, i) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
-#define RepeatBack1(cnt) RepeatBack2(cnt, i)
+#define RepeatBack3(cnt, i, pos) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
+#define RepeatBack2(cnt, i) RepeatBack3(cnt, i, pos)
 
-#define Go5(from, to, x, val, i) if (IsValid(x, from) && IsValid(x, to) && from <= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it < x.begin() + to + 1; ++it, ++i, ++pos, val = (it < x.begin() + to + 1 ? x[i] : val))
-#define Go4(from, to, x, val) Go5(from, to, x, val, i)
-#define Go3(from, to, i) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
-#define Go2(from, to) Go3(from, to, i)
+#define Go6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from <= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it < x.begin() + to + 1; ++it, ++i, ++pos, val = (it < x.begin() + to + 1 ? x[i] : val))
+#define Go5(from, to, x, val, i) Go6(from, to, x, val, i, pos)
+#define Go4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
+#define Go3(from, to, i) Go4(from, to, i, pos)
 
-#define GoBack5(from, to, x, val, i) if (IsValid(x, from) && IsValid(x, to) && from >= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it != x.begin() + to; --it, --i, --pos, val = (it != x.begin() + to ? x[i] : val))
-#define GoBack4(from, to, x, val) GoBack5(from, to, x, val, i)
-#define GoBack3(from, to, i) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
-#define GoBack2(from, to) GoBack3(from, to, i)
+#define GoBack6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from >= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it != x.begin() + to; --it, --i, --pos, val = (it != x.begin() + to ? x[i] : val))
+#define GoBack5(from, to, x, val, i) GoBack6(from, to, x, val, i, pos)
+#define GoBack4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
+#define GoBack3(from, to, i) GoBack4(from, to, i, pos)
 
-#define Each3(x, val, i) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
-#define Each2(x, val) Each3(x, val, i)
-#define Each1(x) Each3(x, val, i)
+#define Each4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
+#define Each3(x, val, i) Each4(x, val, i, pos)
+#define Each2(x, i) Each4(x, val, i, pos)
 
-#define EachBack3(x, val, i) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
-#define EachBack2(x, val) EachBack3(x, val, i)
-#define EachBack1(x) EachBack3(x, val, i)
+#define EachBack4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
+#define EachBack3(x, val, i) EachBack4(x, val, i, pos)
+#define EachBack2(x, i) EachBack4(x, val, i, pos)
 
-#define EachPair4(x, key, val, i) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
-#define EachPair3(x, key, val) EachPair4(x, key, val, i)
-#define EachPair1(x) EachPair4(x, key, val, i)
+#define EachPair5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
+#define EachPair4(x, key, val, i) EachPair5(x, key, val, i, pos)
+#define EachPair2(x, i) EachPair4(x, key, val, i)
 
-#define EachPairBack4(x, key, val, i) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
-#define EachPairBack3(x, key, val) EachPairBack4(x, key, val, i)
-#define EachPairBack1(x) EachPairBack4(x, key, val, i)
+#define EachPairBack5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
+#define EachPairBack4(x, key, val, i) EachPairBack5(x, key, val, i, pos)
+#define EachPairBack2(x, i) EachPairBack4(x, key, val, i)
 
 #define Init4(T, a, b, val) T a, b; a = val; b = val;
 #define Init5(T, a, b, c, val) T a, b, c; a = val; b = val; c = val;
@@ -191,8 +189,6 @@ string ToBString(int num) {
 }
 int FromBstring(string bstring) { return stoi(bstring, nullptr, 2); }
 
-tcT bool CkMin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
-tcT bool CkMax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 tcT bool Odd(T x) { return x % 2 != 0; }
 tcT bool Even(T x) { return x % 2 == 0; }
 tcT T Parity(T x) { return x % 2; }
@@ -215,7 +211,7 @@ void ToLower(string &s) {
 
 bool IsPalindrome(string &s) {
   int n = Size(s);
-  Repeat (n / 2) {
+  Repeat (n / 2, i) {
     if (s[i] != s[n - 1 - i]) return false;
   }
   return true;
@@ -228,7 +224,7 @@ tcT V<T> Psum(V<T> &v) {
   int n = Size(v);
   V<T> psum(n);
   psum[0] = v[0];
-  Go (1, n - 1) {
+  Go (1, n - 1, i) {
     psum[i] = psum[i - 1] + v[i];
   }
   return psum;
@@ -240,7 +236,7 @@ tcT V<T> Ssum(V<T> &v) {
   int n = Size(v);
   V<T> ssum(n);
   ssum[n - 1] = v[n - 1];
-  RepeatBack (n - 1) {
+  RepeatBack (n - 1, i) {
     ssum[i] = ssum[i + 1] + v[i];
   }
   return ssum;
@@ -270,7 +266,7 @@ template <class T, class BinaryPredicate>
 bool ForAllAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1) {
+  Repeat (Size(v) - 1, i) {
     if (!lambda(v[i], v[i + 1]))
       return false;
   }
@@ -288,7 +284,7 @@ template<class T, class BinaryPredicate>
 bool ForAnyAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1) {
+  Repeat (Size(v) - 1, i) {
     if (lambda(v[i], v[i + 1]))
       return true;
   }
@@ -306,7 +302,7 @@ template<class T, class BinaryPredicate>
 bool ForNoneAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1) {
+  Repeat (Size(v) - 1, i) {
     if (lambda(v[i], v[i + 1]))
       return false;
   }
@@ -352,7 +348,7 @@ tcT int First(const V<T> &v, T t) {
 int First(string &s, char c) {
   assert(!s.empty());
   
-  Each (s) {
+  Each (s, i) {
     if (s[i] == c) return i;
   }
   return -1;
@@ -365,7 +361,7 @@ int First(string &s, string t) {
   int m = Size(t);
   assert(m <= n);
   
-  Repeat (n - m + 1) {
+  Repeat (n - m + 1, i) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -382,7 +378,7 @@ template<class T, class BinaryPredicate>
 int FirstAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Each(v) {
+  Each(v, i) {
     if (lambda(v[i], v[i + 1])) {
       return i;
     }
@@ -399,7 +395,7 @@ tcT int Last(const V<T> &v, T t) {
 int Last(string &s, char t) {
   assert(!s.empty());
   
-  EachBack (s, c) {
+  EachBack (s, c, i) {
     if (c == t) return i;
   }
   return -1;
@@ -411,7 +407,7 @@ int Last(string &s, string t) {
   int n = Size(s);
   int m = Size(t);
   assert(m <= n);
-  RepeatBack (n - m + 1) {
+  RepeatBack (n - m + 1, i) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -421,7 +417,7 @@ template<class T, class UnaryPredicate>
 int Last(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  EachBack (v) {
+  EachBack (v, i) {
     if (lambda(v[i])) {
       return i;
     }
@@ -433,7 +429,7 @@ template<class T, class BinaryPredicate>
 int LastAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  GoBack (Size(v) - 1, 1) {
+  GoBack (Size(v) - 1, 1, i) {
     if (lambda(v[i - 1], v[i])) {
       return i;
     }
@@ -459,13 +455,13 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
   int cnt = 0;
-  Repeat (Size(v) - 1) {
+  Repeat (Size(v) - 1, i) {
     if (lambda(v[i], v[i + 1])) cnt++;
   }
   return cnt;
 }
 
-tcT void Min(T &first, T &second) {
+tcT void Min(T &first, T second) {
   first = std::min(first, second);
 }
 
@@ -481,7 +477,7 @@ tcT T GetMinSecond(V<T> &v) {
   int n = Size(v);
   int min = v[0];
   int second_min = (v[1] > min ? v[1] : -1);
-  Go (1, n - 1) {
+  Go (1, n - 1, i) {
     if (v[i] < min) {
       second_min = min;
       Min(min, v[i]);
@@ -496,7 +492,7 @@ tcT int GetMinPos(const V<T> &v) {
   return min_element(All(v)) - v.begin();
 }
 
-tcT void Max(T &first, T &second) {
+tcT void Max(T &first, T second) {
   first = std::max(first, second);
 }
 
@@ -512,7 +508,7 @@ tcT T GetMaxSecond(V<T> &v) {
   int n = Size(v);
   int max = v[0];
   int second_max = (v[1] < max ? v[1] : -1);
-  Go (1, n - 1) {
+  Go (1, n - 1, i) {
     if (v[i] > max) {
       second_max = max;
       Max(max, v[i]);
@@ -616,27 +612,27 @@ tcTU bool KeyFound(MM<T, U> &mm, T key) {
 // Vector
 tcT auto ReadVector(int n) {
   V<T> x(n);
-  Repeat (n) cin >> x[i];
+  Repeat (n, i) cin >> x[i];
   return x;
 }
 
 tcT auto ReadPairs(int n) {
   V<T> x(n);
-  Repeat (n) cin >> x[i].first >> x[i].second;
+  Repeat (n, i) cin >> x[i].first >> x[i].second;
   return x;
 }
 
 // Map
 template<class T, class U, class Z> auto MakeMap(Z &v) {
   M<T, U> m;
-  Each(v) m[v[i]]++;
+  Each(v, i) m[v[i]]++;
   return m;
 }
 
 // 2D array
 tcT auto Read2D(T n, T m) {
   auto t = Make2D(n, m);
-  Repeat (n) {
+  Repeat (n, i) {
     Repeat (m, j) {
       cin >> t[i][j];
     }
@@ -661,7 +657,7 @@ tcT auto Make2D(T n, T m, T def) {
 
 tcT auto ReadAdjList(T n, T m) {
   auto adj_list = Make2D(n);
-  Repeat (m) {
+  Repeat (m, i) {
     Read(int, a, b);
     adj_list[a].pb(b);
     adj_list[b].pb(a);
@@ -683,11 +679,11 @@ tcT int PrintVector(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v) cout << v[i];
+    Each (v, i) cout << v[i];
   } else if (from == -1) {
-    Go (from, n - 1) cout << v[i];
+    Go (from, n - 1, i) cout << v[i];
   } else {
-    Go (from, to) cout << v[i];
+    Go (from, to, i) cout << v[i];
   }
   
   cout << "\n";
@@ -700,11 +696,11 @@ tcT int PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v) cout << v[i] << " ";
+    Each (v, i) cout << v[i] << " ";
   } else if (from == -1) {
-    Go (from, n - 1) cout << v[i] << " ";
+    Go (from, n - 1, i) cout << v[i] << " ";
   } else {
-    Go (from, to) cout << v[i] << " ";
+    Go (from, to, i) cout << v[i] << " ";
   }
   
   cout << "\n";
@@ -717,11 +713,11 @@ tcT int PrintVectorN(V<T> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v) Print(v[i]);
+    Each (v, i) Print(v[i]);
   } else if (from == -1) {
-    Go (from, n - 1) Print(v[i]);
+    Go (from, n - 1, i) Print(v[i]);
   } else {
-    Go (from, to) Print(v[i]);
+    Go (from, to, i) Print(v[i]);
   }
 
   return 42;
@@ -734,11 +730,11 @@ tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
   if (to != -1) assert(IsValid(v, to));
 
   if (from == -1 && to == -1) {
-    EachPair (v) PrintSp(key, val);
+    EachPair (v, i) PrintSp(key, val);
   } else if (from == -1) {
-    Go (from, n - 1) PrintSp(v[i].fi, v[i].se);
+    Go (from, n - 1, i) PrintSp(v[i].fi, v[i].se);
   } else {
-    Go (from, to) PrintSp(v[i].fi, v[i].se);
+    Go (from, to, i) PrintSp(v[i].fi, v[i].se);
   }
   
   return 42;
@@ -747,7 +743,7 @@ tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
 // 2D array
 tcT int Print2D(V<V<T>> &t) {
   auto [n, m] = Dimensions(t);
-  Repeat (n) {
+  Repeat (n, i) {
     Repeat (m, j) {
       cout << t[i][j];
     }
@@ -759,7 +755,7 @@ tcT int Print2D(V<V<T>> &t) {
 
 // Map
 tcTU int PrintMap(M<T, U> m) {
-  EachPair (m) {
+  EachPair (m, i) {
     cout << key << " " << val << "\n";
   }
 
@@ -803,15 +799,32 @@ int Solve() {
   Read(string, s, t);
   int n = Size(s);
   int m = Size(t);
-  if (m == n) {
-    return Print(0);
-  }
+  if (m == n) return Print(0);
+  
   // n > m
   V<int> pre(m), suf(m);
-  // pre - stores the index in 's' that is the LAST CHARACTER
-  // matching the i-th character in 't'
+  {
+    int j = 0;
+    Each (s, ch, i) {
+      if (ch == t[j]) {
+        pre[j++] = i;
+      }
+    }
+    
+    j = m;
+    EachBack (s, ch, i) {
+      if (ch == t[j - 1]) {
+        suf[--j] = i;
+      }
+    }
+  }
   
-  
+  int ans = max(n - 1 - pre.back(), suf.front());
+  Go (0, m - 2, i) {
+    Max(ans, suf[i + 1] - pre[i] - 1);
+  }
+
+  return Print(ans);
 }
 
 

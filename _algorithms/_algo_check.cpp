@@ -24,12 +24,14 @@ int main() {
   pick_one.insert(pick_one.end(), binary.begin(), binary.end());
 
   vector<string> strings = {
-    
+    "IsPalindrome", "Pref and Suf of word letters"
   };
   pick_one.insert(pick_one.end(), strings.begin(), strings.end());
 
   vector<string> math = {
-    
+    "Get divisors", "Count divisors", "Get gcd of a list of numbers",
+    "Lcm (that also means implement Gcd)", "Is number a prime?", "Sieve of Eratosthenes",
+    "Prime factorization", "Euler's Totient"
   };
   pick_one.insert(pick_one.end(), math.begin(), math.end());
 
@@ -51,10 +53,7 @@ int main() {
   return 0;
 }
 
-// ------- IMPLEMENT DOWN HERE -------
-
-
-
+// ------- IMPLEMENT IN _tests/startup.cpp -------
 
 
 
