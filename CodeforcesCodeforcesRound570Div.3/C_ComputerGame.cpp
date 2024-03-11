@@ -1,9 +1,5 @@
-// Print return jedna funkce (odstranit vnoreni)
-// When -> treba IsTrue
-// nahradit L, R -> tridou Range
-// pokusit se nahradit substr, coz je v cyklu (n * m) na (n + m), automat regex
-// rotate linear, fake vector pomoci iteratoru
-// Frequency table for string
+// time-limit: 3000
+// problem-url: https://codeforces.com/contest/1183/problem/C
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -91,7 +87,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) cout << a << "\n"; return 42;
+#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
 
 #define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
@@ -168,7 +164,7 @@ tcT using ST = stack<T>;
 #define Size(x) (int) x.size()
 #define All(x) x.begin(), x.end()
 #define Rall(x) x.rbegin(), x.rend()
-#define At(x) [x.first][x.second] 
+#define At(x) [x.first][x.second]
 #define Pair(x) { x.first, x.second }
 #define When(f) [&](auto x) { return f; }
 #define WhenAdj(f) [&](auto x, auto y) { return f; }
@@ -177,6 +173,7 @@ tcT using ST = stack<T>;
 int LetterToInt(char c) { return int(c - 'a'); }
 int DigitToInt(char c) { return int(c - '0'); }
 char DigitToChar(int num) { return char(num + '0'); }
+int StringToInt(string s) { return stoi(s); }
 string ToBString(int num) {
   string bstring;
   while (num > 0) {
@@ -253,8 +250,8 @@ tcT T SumAll(V<T> &v) {
   return accumulate(All(v), T(0));
 }
 
-template <class T, class UnaryPredicate>
-bool ForAll(const V<T> &v, UnaryPredicate lambda) {
+template <class T, class BinaryPredicate>
+bool ForAll(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
   return std::all_of(All(v), lambda);
@@ -308,22 +305,30 @@ bool ForNoneAdj(const V<T> &v, BinaryPredicate lambda) {
 }
 
 tcT bool Asc(const V<T> &v) {
+  assert(!v.empty());
+  
   return ForNoneAdj(v, WhenAdj(x >= y));
 }
 
 tcT bool NonAsc(const V<T> &v) {
+  assert(!v.empty());
+  
   return ForNoneAdj(v, WhenAdj(x < y));
 }
 
 tcT bool Desc(const V<T> &v) {
+  assert(!v.empty());
+  
   return ForNoneAdj(v, WhenAdj(x <= y));
 }
 
 tcT bool NonDesc(const V<T> &v) {
+  assert(!v.empty());
+  
   return ForNoneAdj(v, WhenAdj(x > y));
 }
 
-tcT bool Contains(const V<T> &v, T x) {
+tcT bool Found(const V<T> &v, T x) {
   assert(!v.empty());
   
   return std::find(All(v), x) != v.end();
@@ -522,6 +527,8 @@ tcT T Avg(const V<T> &v) {
 }
 
 tcT int Unique(T &v) {
+  assert(!v.empty());
+  
   sort(All(v));
   v.resize(unique(All(v)) - v.begin());
   return Size(v);
@@ -581,6 +588,8 @@ template<class T, class U> bool IsValid(T &t, U x, U y) {
   assert(!t.empty());
   
   auto [n, m] = Dimensions(t);
+  if (n == 0) return false;
+
   return (x >= 0 && x < n && y >= 0 && y < m);
 }
 
@@ -609,7 +618,7 @@ tcT auto ReadPairs(int n) {
 }
 
 // Map
-template<class T, class U, class Z> auto FrequencyMap(Z &v) {
+template<class T, class U, class Z> auto MakeMap(Z &v) {
   M<T, U> m;
   Each(num, v, i) m[num]++;
   return m;
@@ -756,7 +765,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -780,16 +789,44 @@ int main() {
   return 0;
 }
 
+
 int Solve() {
-  return Print("5");
+  Read(llong, k, n, a, b);
+  if (n * b >= k) {
+    return Print(-1);
+  }
   
- 
+  llong lo = 0;
+  llong hi = n;
+  llong ans = 0;
+  while (lo <= hi) {
+    llong games = lo + (hi - lo) / 2;
+    
+    llong energy = k;
+    
+    llong spend_energy = games * a;
+    energy -= spend_energy;
+    
+    llong play_charge = energy / b;
+    energy -= min(n - games, play_charge) * b;
+    
+    if (energy > 0) {
+      Max(ans, games);
+      lo = games + 1;
+    } else {
+      hi = games - 1;
+    }
+  }
+
+  if (n * a < k) ans = n;
+  if (k - ans * a < b) ans = 0;
+  return Print(ans);
 }
 
 
 
 /* ================= Notes ================== //
-	
+   
 */
 
 

@@ -1,3 +1,5 @@
+// time-limit: 1000
+// problem-url: https://codeforces.com/contest/1941/problem/0
 // Print return jedna funkce (odstranit vnoreni)
 // When -> treba IsTrue
 // nahradit L, R -> tridou Range
@@ -91,7 +93,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) cout << a << "\n"; return 42;
+#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
 
 #define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
@@ -756,7 +758,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -781,15 +783,22 @@ int main() {
 }
 
 int Solve() {
-  return Print("5");
-  
- 
+  Read(int, n, m, k);
+  auto b = ReadVector<int>(n);
+  auto c = ReadVector<int>(m);
+  int cnt = 0;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (b[i] + c[j] <= k) cnt++;
+    }
+  }
+  return Print(cnt);
 }
 
 
 
 /* ================= Notes ================== //
-	
+	a + b <= k
 */
 
 

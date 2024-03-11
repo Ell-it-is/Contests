@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://codeforces.com/contest/1941/problem/C
 // Print return jedna funkce (odstranit vnoreni)
 // When -> treba IsTrue
 // nahradit L, R -> tridou Range
@@ -91,7 +93,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) cout << a << "\n"; return 42;
+#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
 
 #define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
@@ -756,7 +758,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -781,9 +783,27 @@ int main() {
 }
 
 int Solve() {
-  return Print("5");
+  Read(int, n);
+  Read(string, s);
+
+  int cnt = 0;
+  for (int i = 0; i < n - 2; i++) {
+    if (s[i] == 'm' && s[i + 1] == 'a' && s[i + 2] == 'p') {
+      cnt++;
+    }
+  }
+  for (int i = 0; i < n - 2; i++) {
+    if (s[i] == 'p' && s[i + 1] == 'i' && s[i + 2] == 'e') {
+      cnt++;
+    }
+  }
+  for (int i = 0; i < n - 4; i++) {
+    if (s[i] == 'm' && s[i + 1] == 'a' && s[i + 2] == 'p' && s[i + 3] == 'i' && s[i + 4] == 'e') {
+      cnt--;
+    }
+  }
   
- 
+  return Print(cnt);
 }
 
 

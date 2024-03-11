@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://codeforces.com/contest/1941/problem/D
 // Print return jedna funkce (odstranit vnoreni)
 // When -> treba IsTrue
 // nahradit L, R -> tridou Range
@@ -91,7 +93,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) cout << a << "\n"; return 42;
+#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
 
 #define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
@@ -756,7 +758,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -781,9 +783,32 @@ int main() {
 }
 
 int Solve() {
-  return Print("5");
-  
- 
+  Read(int, n, m, x);
+  V<int> b { x };
+  for (int q = 0; q < m; q++) {
+    Read(int, r);
+    Read(char, c);
+    S<int> step_on;
+    Each(p, b, i) {
+      if (c == '0') {
+        int res = (p + r) % n;
+        step_on.ins( res == 0 ? n : res ); 
+      } else if (c == '1') {
+        int res = (p - r + n) % n;
+        step_on.ins( res == 0 ? n : res );
+      } else {
+        int res1 = (p + r) % n;
+        step_on.ins( res1 == 0 ? n : res1 );
+        int res = (p - r + n) % n;
+        step_on.ins( res == 0 ? n : res );
+      }
+    }
+    vector<int> w(step_on.begin(), step_on.end());
+    b = w;
+  }
+
+  Print(Size(b));
+  return PrintVectorSp(b);
 }
 
 

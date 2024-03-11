@@ -1,25 +1,26 @@
-// time-limit: 1000
-// problem-url: https://codeforces.com/contest/1249/problem/C1
 
 #include <bits/stdc++.h>
 using namespace std;
 using llong = long long;
 
 #ifdef DEBUG
-#include "../template/debug.h"
+#include "../_template/debug.h"
 #else
 #define __DEBUG__(x...)
 #endif
 
 // Constants
-const int mod = 1e9+7;
-const int solved = 42;
+const int MOD = 1e9+7;
 const int MX = numeric_limits<int>::max();
 const int MN = numeric_limits<int>::min();
 const llong MXL = numeric_limits<llong>::max();
 const llong MNL = numeric_limits<llong>::min();
 const double MXD = numeric_limits<double>::max();
 const double MND = numeric_limits<double>::min();
+
+const string dstr ("URDL");
+const int dx[4] = { -1, 0, 1, 0 };
+const int dy[4] = { 0, 1, 0, -1 };
 
 // Define templates
 #define tcT template <class T>
@@ -34,79 +35,79 @@ const double MND = numeric_limits<double>::min();
 #define _ARG_PATTERN_MATCH(_1,_2,_3,_4,_5,_6,_7,_8,_9, N, ...)   N
 
 // Defined Macro
-#define rep(...)     OVERLOADED_MACRO(rep, __VA_ARGS__)
-#define rep_back(...)     OVERLOADED_MACRO(rep_back, __VA_ARGS__)
-#define go(...)     OVERLOADED_MACRO(go, __VA_ARGS__)
-#define go_back(...)     OVERLOADED_MACRO(go_back, __VA_ARGS__)
-#define each(...)     OVERLOADED_MACRO(each, __VA_ARGS__)
-#define each_back(...)     OVERLOADED_MACRO(each_back, __VA_ARGS__)
-#define each_pair(...)     OVERLOADED_MACRO(each_pair, __VA_ARGS__)
-#define each_pair_back(...)     OVERLOADED_MACRO(each_pair_back, __VA_ARGS__)
-#define init(...)     OVERLOADED_MACRO(init, __VA_ARGS__)
-#define read(...)     OVERLOADED_MACRO(read, __VA_ARGS__)
-#define print(...)     OVERLOADED_MACRO(print, __VA_ARGS__)
-#define printSP(...)     OVERLOADED_MACRO(printSP, __VA_ARGS__)
-#define printN(...)     OVERLOADED_MACRO(printN, __VA_ARGS__)
+#define Repeat(...)     OVERLOADED_MACRO(Repeat, __VA_ARGS__)
+#define RepeatBack(...)     OVERLOADED_MACRO(RepeatBack, __VA_ARGS__)
+#define Go(...)     OVERLOADED_MACRO(Go, __VA_ARGS__)
+#define GoBack(...)     OVERLOADED_MACRO(GoBack, __VA_ARGS__)
+#define Each(...)     OVERLOADED_MACRO(Each, __VA_ARGS__)
+#define EachBack(...)     OVERLOADED_MACRO(EachBack, __VA_ARGS__)
+#define EachPair(...)     OVERLOADED_MACRO(EachPair, __VA_ARGS__)
+#define EachPairBack(...)     OVERLOADED_MACRO(EachPairBack, __VA_ARGS__)
+#define Init(...)     OVERLOADED_MACRO(Init, __VA_ARGS__)
+#define Read(...)     OVERLOADED_MACRO(Read, __VA_ARGS__)
+#define Print(...)     OVERLOADED_MACRO(Print, __VA_ARGS__)
+#define PrintSp(...)     OVERLOADED_MACRO(PrintSp, __VA_ARGS__)
+#define PrintN(...)     OVERLOADED_MACRO(PrintN, __VA_ARGS__)
 
 // Loops
-#define rep2(cnt, i) for (auto&& [i, pos] = std::tuple { 0, 1 }; i < cnt; i++, pos++)
-#define rep1(cnt) rep2(cnt, i)
+#define Repeat3(cnt, i, pos) for (auto&& [i, pos] = std::tuple { 0, 1 }; i < cnt; i++, pos++)
+#define Repeat2(cnt, i) Repeat3(cnt, i, pos)
+#define Repeat1(cnt) Repeat3(cnt, i, pos)
 
-#define rep_back2(cnt, i) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
-#define rep_back1(cnt) rep_back2(cnt, i)
+#define RepeatBack3(cnt, i, pos) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
+#define RepeatBack2(cnt, i) RepeatBack3(cnt, i, pos)
+#define RepeatBack1(cnt) RepeatBack3(cnt, i, pos)
 
-#define go5(from, to, x, val, i) if (CheckBounds(x, from) && CheckBounds(x, to) && from <= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it < x.begin() + to + 1; ++it, ++i, ++pos, val = (it < x.begin() + to + 1 ? x[i] : val))
-#define go4(from, to, x, val) go5(from, to, x, val, i)
-#define go3(from, to, i) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
-#define go2(from, to) go3(from, to, i)
+#define Go4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
+#define Go3(from, to, i) Go4(from, to, i, pos)
+#define Go2(from, to) Go4(from, to, i, pos)
 
-#define go_back5(from, to, x, val, i) if (CheckBounds(x, from) && CheckBounds(x, to) && from >= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it != x.begin() + to; --it, --i, --pos, val = (it != x.begin() + to ? x[i] : val))
-#define go_back4(from, to, x, val) go_back5(from, to, x, val, i)
-#define go_back3(from, to, i) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
-#define go_back2(from, to) go_back3(from, to, i)
+#define GoBack4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
+#define GoBack3(from, to, i) GoBack4(from, to, i, pos)
+#define GoBack2(from, to) GoBack4(from, to, i, pos)
 
-#define each3(x, val, i) if (sz(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
-#define each2(x, val) each3(x, val, i)
-#define each1(x) each3(x, val, i)
+#define Each4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
+#define Each3(val, x, i) Each4(val, x, i, pos)
+#define Each2(val, x) Each4(val, x, i, pos)
 
-#define each_back3(x, val, i) if (sz(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), sz(x) - 1, sz(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
-#define each_back2(x, val) each_back3(x, val, i)
-#define each_back1(x) each_back3(x, val, i)
+#define EachBack4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
+#define EachBack3(val, x, i) EachBack4(val, x, i, pos)
+#define EachBack2(val, x) EachBack4(val, x, i, pos)
 
-#define each_pair4(x, key, val, i) if (sz(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
-#define each_pair3(x, key, val) each_pair4(x, key, val, i)
-#define each_pair1(x) each_pair4(x, key, val, i)
+#define EachPair5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
+#define EachPair4(key, val, x, i) EachPair5(key, val, x, i, pos)
+#define EachPair3(key, val, x) EachPair5(key, val, x, i, pos)
 
-#define each_pair_back4(x, key, val, i) if (sz(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, sz(x) - 1, sz(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
-#define each_pair_back3(x, key, val) each_pair_back4(x, key, val, i)
-#define each_pair_back1(x) each_pair_back4(x, key, val, i)
+#define EachPairBack5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
+#define EachPairBack4(key, val, x, i) EachPairBack5(key, val, x, i, pos)
+#define EachPairBack3(key, val, x) EachPairBack5(key, val, x, i, pos)
 
-// TODO: cycle that takes indicies at both sides of vector and comes together
-
-#define init4(T, a, b, val) T a, b; a = val; b = val;
-#define init5(T, a, b, c, val) T a, b, c; a = val; b = val; c = val;
-#define init6(T, a, b, c, d, val) T a, b, c, d; a = val; b = val; c = val; d = val;
+#define Init4(T, a, b, val) T a, b; a = val; b = val;
+#define Init5(T, a, b, c, val) T a, b, c; a = val; b = val; c = val;
+#define Init6(T, a, b, c, d, val) T a, b, c, d; a = val; b = val; c = val; d = val;
 
 // Input (basic types)
-#define read2(T, a) T a; cin >> a;
-#define read3(T, a, b) T a, b; cin >> a >> b;
-#define read4(T, a, b, c) T a, b, c; cin >> a >> b >> c;
-#define read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
+#define Read2(T, a) T a; cin >> a;
+#define Read3(T, a, b) T a, b; cin >> a >> b;
+#define Read4(T, a, b, c) T a, b, c; cin >> a >> b >> c;
+#define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define print1(a) print_return(when_void(cout << a << "\n";));
+#define Print1(a) cout << a << "\n";
+#define Print2(a, b) cout << a << b << "\n";
+#define Print3(a, b, c) cout << a << b << c << "\n";
+#define Print4(a, b, c, d) cout << a << b << c << d << "\n";
 
-#define print2(a, b) print_return(when_void(cout << a << b << "\n";));
-#define print3(a, b, c) print_return(when_void(cout << a << b << c << "\n";));
-#define print4(a, b, c, d) print_return(when_void(cout << a << b << c << d << "\n";));
+#define PrintAns(a) cout << (a ? "Yes" : "No") << "\n";
+#define PrintAnsCaps(a) cout << (a ? "YES" : "NO") << "\n";
 
-#define printSP2(a, b) print_return(when_void(cout << a << " " << b << "\n";));
-#define printSP3(a, b, c) print_return(when_void(cout << a << " " << b << " " << c << "\n";));
-#define printSP4(a, b, c, d) print_return(when_void(cout << a << " " << b << " " << c << " " << d << "\n";));
+#define PrintSp2(a, b) cout << a << " " << b << "\n";
+#define PrintSp3(a, b, c) cout << a << " " << b << " " << c << "\n";
+#define PrintSp4(a, b, c, d) cout << a << " " << b << " " << c << " " << d << "\n";
 
-#define printN2(a, b) print_return(when_void(cout << a << "\n" << b << "\n";));
-#define printN3(a, b, c) print_return(when_void(cout << a << "\n" << b << "\n" << c << "\n";));
-#define printN4(a, b, c, d) print_return(when_void(cout << a << "\n" << b << "\n" << c << "\n" << d << "\n";));
+#define PrintN2(a, b) cout << a << "\n" << b << "\n";
+#define PrintN3(a, b, c) cout << a << "\n" << b << "\n" << c << "\n";
+#define PrintN4(a, b, c, d) cout << a << "\n" << b << "\n" << c << "\n" << d << "\n";
 
 // Data structures
 tcT using V = vector<T>;
@@ -116,21 +117,90 @@ tcTU using M = map<T, U>;
 tcTU using MM = multimap<T, U>;
 tcTU using MMg = multimap<T, U, greater<T>>;
 template<class T, int count> using A = array<T, count>;
+tcT using Q = queue<T>;
+tcT using ST = stack<T>;
 
-// Shortcuts
+#define II int, int
+
+#define SS string, string
+#define IS int, string
+#define SI string, int
+
+#define DD double, double
+#define ID int, double
+#define DI double, int
+#define SD string, double
+#define DS double, string
+
+#define LL llong, llong
+#define IL int, llong
+#define LI llong, int
+#define SL string, llong
+#define LS llong, string
+#define DL double, llong
+#define LD llong, double
+
+#define CC char, char
+#define CI char, int
+#define IC int, char
+#define CS char, string
+#define SC string, char
+#define CD char, double
+#define DC double, char
+#define CL char, llong
+#define LC llong, char
+
+#define PI pair<int, int>
+
+#define PS pair<string, string>
+#define PIS pair<int, string>
+#define PSI pair<string, int>
+
+#define PD pair<double, double>
+#define PID pair<int, double>
+#define PDI pair<double, int>
+#define PSD pair<string, double>
+#define PDS pair<double, string>
+
+#define PL pair<llong, llong>
+#define PIL pair<int, llong>
+#define PLI pair<llong, int>
+#define PSL pair<string, llong>
+#define PLS pair<llong, string>
+#define PDL pair<double, llong>
+#define PLD pair<llong, double>
+
+#define PCC pair<char, char>
+#define PCI pair<char, int>
+#define PIC pair<int, char>
+#define PCS pair<char, string>
+#define PSC pair<string, char>
+#define PCD pair<char, double>
+#define PDC pair<double, char>
+#define PCL pair<char, llong>
+#define PLC pair<llong, char>
+
+
+// Shortcuts of cpp code
 #define pb push_back
 #define pob pop_back
 #define ins insert
-#define sz(x) (int) x.size()
-#define all(x) x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
-#define when(f) [&](auto x) { return f; }
-#define when_adj(f) [&](auto x, auto y) { return f; }
-#define when_void(f) [&]() { f; }
+#define fi first
+#define se second
 
-int ToNum(char c) { return int(c - '0'); }
-char ToChar(int num) { return char(num + '0'); }
-int ToNum(string s) { return stoi(s); }
+// Custom shortcut-functions
+#define Size(x) (int) x.size()
+#define All(x) x.begin(), x.end()
+#define Rall(x) x.rbegin(), x.rend()
+#define At(x) [x.first][x.second] 
+#define Pair(x) { x.first, x.second }
+#define Claim(f) [&](auto x) { return f; }
+#define ClaimAdj(f) [&](auto x, auto y) { return f; }
+#define Do(f) [&]() { f; }
+
+int LetterToInt(char c) { return int(c - 'a'); }
+int DigitToInt(char c) { return int(c - '0'); }
+char DigitToChar(int num) { return char(num + '0'); }
 string ToBString(int num) {
   string bstring;
   while (num > 0) {
@@ -141,11 +211,10 @@ string ToBString(int num) {
 }
 int FromBstring(string bstring) { return stoi(bstring, nullptr, 2); }
 
-tcT bool Ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
-tcT bool Ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+tcT T Parity(T x) { return x % 2; }
 tcT bool Odd(T x) { return x % 2 != 0; }
 tcT bool Even(T x) { return x % 2 == 0; }
-tcT T Parity(T x) { return x % 2; }
+tcT bool DivBy(T n, T div) { return n % div == 0; }
 tcT T Pairs(T n) { return n * (n - 1) / 2; }
 tcT T SumN(T n) { return n * (n + 1) / 2; }
 tcT T SumSq(T n) { return n * (n + 1) * (2 * n + 1) / 6; }
@@ -156,29 +225,21 @@ tcT T PairAvg(T a, T b) { return (a + b) / 2; }
 
 // Strings
 void ToUpper(string &s) {
-  transform(all(s), s.begin(), ::toupper);
+  transform(All(s), s.begin(), ::toupper);
 }
 
 void ToLower(string &s) {
-  transform(all(s), s.begin(), ::tolower);
-}
-
-bool IsPalindrome(string &s) {
-  int n = sz(s);
-  rep (n / 2) {
-    if (s[i] != s[n - 1 - i]) return false;
-  }
-  return true;
+  transform(All(s), s.begin(), ::tolower);
 }
 
 // Vector
 tcT V<T> Psum(V<T> &v) {
   assert(!v.empty());
   
-  int n = sz(v);
+  int n = Size(v);
   V<T> psum(n);
   psum[0] = v[0];
-  go (1, n - 1) {
+  Go (1, n - 1) {
     psum[i] = psum[i - 1] + v[i];
   }
   return psum;
@@ -187,10 +248,10 @@ tcT V<T> Psum(V<T> &v) {
 tcT V<T> Ssum(V<T> &v) {
   assert(!v.empty());
   
-  int n = sz(v);
+  int n = Size(v);
   V<T> ssum(n);
   ssum[n - 1] = v[n - 1];
-  rep_back (n - 1) {
+  RepeatBack (n - 1) {
     ssum[i] = ssum[i + 1] + v[i];
   }
   return ssum;
@@ -198,7 +259,7 @@ tcT V<T> Ssum(V<T> &v) {
 
 tcT T SumRange(V<T> &psum, int left, int right) {
   assert(!psum.empty());
-  assert(left >= 0 && right < sz(psum));
+  assert(left >= 0 && right < Size(psum));
   
   return (left == 0 ? psum[right] : psum[right] - psum[left - 1]);
 }
@@ -206,21 +267,21 @@ tcT T SumRange(V<T> &psum, int left, int right) {
 tcT T SumAll(V<T> &v) {
   assert(!v.empty());
   
-  return accumulate(all(v), T(0));
+  return accumulate(All(v), T(0));
+}
+
+template <class T, class UnaryPredicate>
+bool ForAll(const V<T> &v, UnaryPredicate lambda) {
+  assert(!v.empty());
+  
+  return std::all_of(All(v), lambda);
 }
 
 template <class T, class BinaryPredicate>
-bool All(const V<T> &v, BinaryPredicate lambda) {
+bool ForAllAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  return std::all_of(all(v), lambda);
-}
-
-template <class T, class BinaryPredicate>
-bool AllAdj(const V<T> &v, BinaryPredicate lambda) {
-  assert(!v.empty());
-  
-  rep (sz(v) - 1) {
+  Repeat (Size(v) - 1) {
     if (!lambda(v[i], v[i + 1]))
       return false;
   }
@@ -228,17 +289,17 @@ bool AllAdj(const V<T> &v, BinaryPredicate lambda) {
 }
 
 template<class T, class UnaryPredicate>
-bool Any(const V<T> &v, UnaryPredicate lambda) {
+bool ForAny(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  return std::any_of(all(v), lambda);
+  return std::any_of(All(v), lambda);
 }
 
 template<class T, class BinaryPredicate>
-bool AnyAdj(const V<T> &v, BinaryPredicate lambda) {
+bool ForAnyAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  rep (sz(v) - 1) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1]))
       return true;
   }
@@ -246,17 +307,17 @@ bool AnyAdj(const V<T> &v, BinaryPredicate lambda) {
 }
 
 template<class T, class UnaryPredicate>
-bool None(const V<T> &v, UnaryPredicate lambda) {
+bool ForNone(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  return std::none_of(all(v), lambda);
+  return std::none_of(All(v), lambda);
 }
 
 template<class T, class BinaryPredicate>
-bool NoneAdj(const V<T> &v, BinaryPredicate lambda) {
+bool ForNoneAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  rep (sz(v) - 1) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1]))
       return false;
   }
@@ -264,45 +325,37 @@ bool NoneAdj(const V<T> &v, BinaryPredicate lambda) {
 }
 
 tcT bool Asc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return NoneAdj(v, when_adj(x >= y));
+  return ForNoneAdj(v, ClaimAdj(x >= y));
 }
 
 tcT bool NonAsc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return NoneAdj(v, when_adj(x < y));
+  return ForNoneAdj(v, ClaimAdj(x < y));
 }
 
 tcT bool Desc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return NoneAdj(v, when_adj(x <= y));
+  return ForNoneAdj(v, ClaimAdj(x <= y));
 }
 
 tcT bool NonDesc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return NoneAdj(v, when_adj(x > y));
+  return ForNoneAdj(v, ClaimAdj(x > y));
 }
 
-tcT bool Found(const V<T> &v, T x) {
+tcT bool Contains(const V<T> &v, T x) {
   assert(!v.empty());
   
-  return std::find(all(v), x) != v.end();
+  return std::find(All(v), x) != v.end();
 }
 
 tcT int First(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return First(v, when(x == t)) - v.begin();
+  return First(v, Claim(x == t)) - v.begin();
 }
 
 int First(string &s, char c) {
   assert(!s.empty());
   
-  each (s) {
+  Each (c, s) {
     if (s[i] == c) return i;
   }
   return -1;
@@ -311,11 +364,11 @@ int First(string &s, char c) {
 int First(string &s, string t) {
   assert(!s.empty());
   
-  int n = sz(s);
-  int m = sz(t);
+  int n = Size(s);
+  int m = Size(t);
   assert(m <= n);
   
-  rep (n - m + 1) {
+  Repeat (n - m + 1) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -325,31 +378,32 @@ template<class T, class UnaryPredicate>
 int First(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  return std::find_if(all(v), lambda) - v.begin();
+  return std::find_if(All(v), lambda) - v.begin();
 }
 
 template<class T, class BinaryPredicate>
 int FirstAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  each(v) {
+  Each(num, v) {
     if (lambda(v[i], v[i + 1])) {
       return i;
     }
   }
-  return sz(v);
+  
+  return Size(v);
 }
 
 tcT int Last(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return Last(v, when(x == t)) - v.begin();
+  return Last(v, Claim(x == t)) - v.begin();
 }
 
 int Last(string &s, char t) {
   assert(!s.empty());
   
-  each_back(s, c) {
+  EachBack (c, s, i) {
     if (c == t) return i;
   }
   return -1;
@@ -358,10 +412,10 @@ int Last(string &s, char t) {
 int Last(string &s, string t) {
   assert(!s.empty());
   
-  int n = sz(s);
-  int m = sz(t);
+  int n = Size(s);
+  int m = Size(t);
   assert(m <= n);
-  rep_back (n - m + 1) {
+  RepeatBack (n - m + 1) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -371,37 +425,37 @@ template<class T, class UnaryPredicate>
 int Last(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  each_back(v) {
-    if (lambda(v[i])) {
+  EachBack (num, v) {
+    if (lambda(num)) {
       return i;
     }
   }
-  return sz(v);
+  return Size(v);
 }
 
 template<class T, class BinaryPredicate>
 int LastAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  go_back (sz(v) - 1, 1) {
+  GoBack (Size(v) - 1, 1) {
     if (lambda(v[i - 1], v[i])) {
       return i;
     }
   }
-  return sz(v);
+  return Size(v);
 }
 
 tcT T Count(const V<T> &v, T x) {
   assert(!v.empty()); 
   
-  return std::count(all(v), x); 
+  return std::count(All(v), x); 
 }
 
 template<class T, class UnaryPredicate>
 T Count(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  return std::count_if(all(v), lambda);
+  return std::count_if(All(v), lambda);
 }
 
 template<class T, class BinaryPredicate>
@@ -409,35 +463,29 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
   int cnt = 0;
-  rep (sz(v) - 1) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1])) cnt++;
   }
   return cnt;
 }
 
-tcT int MinPos(const V<T> &v) {
-  assert(!v.empty());
-  
-  return min_element(all(v)) - v.begin();
-}
-
-tcT T Min(const V<T> &v) {
-  assert(!v.empty());
-  
-  return *min_element(all(v));
-}
-
-tcT void Min(T &first, T &second) {
+tcT void NewMin(T &first, T second) {
   first = std::min(first, second);
 }
 
-tcT T SecondMin(V<T> &v) {
-  assert(sz(v) > 1);
+tcT T GetMin(const V<T> &v) {
+  assert(!v.empty());
+  
+  return *min_element(All(v));
+}
 
-  int n = sz(v);
+tcT T GetMinSecond(V<T> &v) {
+  assert(Size(v) > 1);
+
+  int n = Size(v);
   int min = v[0];
   int second_min = (v[1] > min ? v[1] : -1);
-  go (1, n - 1) {
+  Go (1, n - 1) {
     if (v[i] < min) {
       second_min = min;
       Min(min, v[i]);
@@ -446,29 +494,29 @@ tcT T SecondMin(V<T> &v) {
   return second_min;
 }
 
-tcT int MaxPos(const V<T> &v) {
+tcT int GetMinPos(const V<T> &v) {
   assert(!v.empty());
   
-  return max_element(all(v)) - v.begin();
+  return min_element(All(v)) - v.begin();
 }
 
-tcT T Max(const V<T> &v) {
-  assert(!v.empty());
-  
-  return *max_element(all(v));
-}
-
-tcT void Max(T &first, T &second) {
+tcT void Max(T &first, T second) {
   first = std::max(first, second);
 }
 
-tcT T SecondMax(V<T> &v) {
-  assert(sz(v) > 1);
+tcT T GetMax(const V<T> &v) {
+  assert(!v.empty());
+  
+  return *max_element(All(v));
+}
 
-  int n = sz(v);
+tcT T GetMaxSecond(V<T> &v) {
+  assert(Size(v) > 1);
+
+  int n = Size(v);
   int max = v[0];
   int second_max = (v[1] < max ? v[1] : -1);
-  go (1, n - 1) {
+  Go (1, n - 1) {
     if (v[i] > max) {
       second_max = max;
       Max(max, v[i]);
@@ -477,239 +525,237 @@ tcT T SecondMax(V<T> &v) {
   return second_max;
 }
 
+tcT int GetMaxPos(const V<T> &v) {
+  assert(!v.empty());
+  
+  return max_element(All(v)) - v.begin();
+}
+
 tcT T Avg(const V<T> &v) {
   assert(!v.empty());
   
-  T n = sz(v);
+  T n = Size(v);
   T sum = Acc(v);
   return sum / n;
 }
 
 tcT int Unique(T &v) {
-  assert(!v.empty());
+  sort(All(v));
+  v.resize(unique(All(v)) - v.begin());
   
-  sort(all(v));
-  v.resize(unique(all(v)) - v.begin());
-  return sz(v);
+  return Size(v);
 }
 
-tcT void RotateLeft(T &v) { assert(!v.empty()); std::rotate(v.begin(), v.begin() + 1, v.end()); }
-tcT void RotateLeft(T &v, int k) { assert(!v.empty()); std::rotate(v.begin(), v.begin() + k, v.end()); }
-tcT void RotateRight(T &v) { assert(!v.empty()); std::rotate(v.rbegin(), v.rbegin() + 1, v.rend()); }
-tcT void RotateRight(T &v, int k) { assert(!v.empty()); std::rotate(v.rbegin(), v.rbegin() + k, v.rend()); }
-void Rotate(std::vector<int>& v, int left, int right, int moves) {
+tcT void RotateLeft(T &v, int k = 1) {
   assert(!v.empty());
   
-  if (left > right || moves == 0) return;
-
-  int subarray_size = right - left + 1;
-  moves %= subarray_size;
-  if (moves == 0) return;
-
-  int shift_right = (moves > 0);
-  if (shift_right) {
-    moves = subarray_size - moves;
-  } else {
-    moves = -moves;
-  }
-
-  std::reverse(v.begin() + left, v.begin() + left + moves);
-  std::reverse(v.begin() + left + moves, v.begin() + right + 1);
-  std::reverse(v.begin() + left, v.begin() + right + 1);
+  rotate(v.begin(), v.begin() + k, v.end());
 }
 
-template<class T> bool CheckBounds(V<T> &v, int idx) {
+tcT void RotateRight(T &v, int k = 1) {
   assert(!v.empty());
   
-  return (idx >= 0 && idx < sz(v));
+  rotate(v.rbegin(), v.rbegin() + k, v.rend());
 }
+
+tcT bool IsValid(T &v, int idx) {
+  assert(!v.empty());
+  
+  return (idx >= 0 && idx < Size(v));
+}
+
 
 // Vector pairs
 
-// 2D vector
-tcT pair<int, int> GetDimensions(V<V<T>> &t) {
+// Matrix
+tcT PI Dimensions(V<V<T>> &t) {
   assert(!t.empty());
 
-  int n = sz(t);
-  int m = sz(t[0]);
+  int n = Size(t);
+  int m = Size(t[0]);
   return { n, m };
 }
 
-template<class T, class U> bool CheckBounds(T &t, U x, U y) {
+PI Dimensions(V<string> &t) {
+  assert(!t.empty());
+
+  int n = Size(t);
+  int m = Size(t[0]);
+  return { n, m };
+}
+
+template<class T, class U>
+bool IsValid(T &t, U x, U y) {
   assert(!t.empty());
   
-  auto [n, m] = GetDimensions(t);
-  if (n == 0) return false;
-
+  auto [n, m] = Dimensions(t);
   return (x >= 0 && x < n && y >= 0 && y < m);
 }
 
 // Map
-tcTU bool KeyFound(M<T, U> &m, T key) {
+tcTU bool Contains(M<T, U> &m, T key) {
   return m.find(key) != m.end();
 }
 
 // Multimap
-tcTU bool KeyFound(MM<T, U> &mm, T key) {
+tcTU bool Contains(MM<T, U> &mm, T key) {
   return mm.find(key) != mm.end();
 }
 
 // --INPUT--
 // Vector
-tcT auto read_vector(int n) {
+tcT auto ReadVector(int n) {
   V<T> x(n);
-  rep (n) cin >> x[i];
+  Repeat (n) cin >> x[i];
   return x;
 }
 
-tcT auto read_pairs(int n) {
+tcT auto ReadPairs(int n) {
   V<T> x(n);
-  rep (n) cin >> x[i].first >> x[i].second;
+  Repeat (n) cin >> x[i].first >> x[i].second;
   return x;
 }
 
 // Map
-template<class T, class U, class Z> auto make_map(Z &v) {
+template<class T, class U, class Z>
+auto FreqMap(Z &x) {
   M<T, U> m;
-  each(v) m[v[i]]++;
+  Each(num, x) m[num]++;
   return m;
 }
 
-// 2D array
-tcT auto read_2D(T n, T m) {
-  auto t = make_2D(n, m);
-  rep (n) {
-    rep (m, j) {
+// Matrix
+tcT auto ReadMatrix(T n, T m) {
+  auto t = MakeMatrix(n, m);
+  Repeat (n, i) {
+    Repeat (m, j) {
       cin >> t[i][j];
     }
   }
   return t;
 }
 
-tcT auto make_2D(T n, T m) {
+tcT auto MakeMatrix(T n) {
+  V<V<T>> t(n);
+  return t;
+}
+
+tcT auto MakeMatrix(T n, T m) {
   V<V<T>> t(n, V<T>(m));
   return t;
 }
 
-tcT auto make_2D(T n, T m, T def) {
+tcT auto MakeMatrix(T n, T m, T def) {
   V<V<T>> t(n, V<T>(m, def));
   return t;
 }
 
+tcT auto ReadAdjList(T n, T m) {
+  auto adj_list = MakeMatrix(n);
+  Repeat (m) {
+    Read(int, a, b);
+    adj_list[a].pb(b);
+    adj_list[b].pb(a);
+  }
+  return adj_list;
+}
+
 // --OUTPUT--
-int print_return(std::function<void()> lambda) {
-  lambda();
-  
-  return solved;
-}
-
 // Vector
-tcT int print_vector(V<T> &v) {
-  int n = sz(v);
-  each(v, num) {
-    cout << num;
-  }
-  cout << "\n";
+tcT void PrintVector(V<T> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
   
-  return solved;
-}
-
-tcT int printSP_vector(V<T> &v) {
-  int n = sz(v);
-  each(v, num) {
-    cout << num << " ";
+  if (from == -1 && to == -1) {
+    Each (num, v) cout << num;
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i];
+  } else {
+    Go (from, to) cout << v[i];
   }
+  
   cout << "\n";
-
-  return solved;
 }
 
-tcT int printN_vector(V<T> &v) {
-  int n = sz(v);
-  each(v, num) {
-    cout << num << "\n";
+tcT void PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (num, v) cout << num << " ";
+  } else if (from == -1) {
+    Go (from, n - 1) cout << v[i] << " ";
+  } else {
+    Go (from, to) cout << v[i] << " ";
   }
+  
+  cout << "\n";
+}
 
-  return solved;
+tcT void PrintVectorN(V<T> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
+  
+  if (from == -1 && to == -1) {
+    Each (num, v) Print(num);
+  } else if (from == -1) {
+    Go (from, n - 1) Print(v[i]);
+  } else {
+    Go (from, to) Print(v[i]);
+  }
 }
 
 // Vector pairs
-tcT int print_pairs(V<pair<T, T>> &v) {
-  each_pair (v) {
-    cout << key << " " << val << "\n";
-  }
+tcT void PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
+  int n = Size(v);
+  if (from != -1) assert(IsValid(v, from));
+  if (to != -1) assert(IsValid(v, to));
 
-  return solved;
+  if (from == -1 && to == -1) {
+    EachPair (key, val, v) PrintSp(key, val);
+  } else if (from == -1) {
+    Go (from, n - 1) PrintSp(v[i].fi, v[i].se);
+  } else {
+    Go (from, to) PrintSp(v[i].fi, v[i].se);
+  }
 }
 
-// 2D array
-tcT int print_2D(V<V<T>> &t) {
-  auto [n, m] = GetDimensions(t);
-  rep (n) {
-    rep (m, j) {
+// Matrix
+tcT void PrintMatrix(V<V<T>> &t) {
+  auto [n, m] = Dimensions(t);
+  Repeat (n, i) {
+    Repeat (m, j) {
       cout << t[i][j];
     }
     cout << "\n";
   }
-
-  return solved;
 }
 
 // Map
-tcTU int print_map(M<T, U> m) {
-  each_pair (m) {
+tcTU void PrintMap(M<T, U> m) {
+  EachPair (key, val, m) {
     cout << key << " " << val << "\n";
   }
-
-  return solved;
 }
 
-int solve();
 
-
-int N = 10;
-V<int> a(N);
-V<int> ternary;
-
-void generate_binary(int n, V<int> &a, int i)
-{
-  if (sz(ternary) > 0 && ternary.back() > 10'000) return;
-  if (i == n) {
-    int num = 0;
-    each_back (a, bit) {
-      if (bit) {
-        num += pow(3, N - 1 - i);
-      }
-    }
-    ternary.pb(num);
-    return;
-  }
-  
-  a[i] = 0;
-  generate_binary(n, a, i + 1);
-  
-  a[i] = 1;
-  generate_binary(n, a, i + 1);
-}
+void Solve();
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   
-  generate_binary(N, a, 0);
-  __DEBUG__(ternary);
-  
   int tt = 1;
   std::cin >> tt;
-  bool lowercase = false;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
   auto prev_time = start_time;
   while (tt--) {
-    int solution = solve();
-    if (solution == 1) std::cout << (lowercase ? "Yes" : "YES") << "\n";
-    if (solution == 0) std::cout << (lowercase ? "No" : "NO") << "\n";
+    Solve();
     
     if (show_time) {
       auto end_time = chrono::high_resolution_clock::now();
@@ -720,22 +766,20 @@ int main() {
       prev_time = end_time;
     }
   }
-
+  
   return 0;
 }
 
-int solve() {
-  read(int, n);
-  int ans = *std::lower_bound(all(ternary), n);
+void Solve() {
   
-  return print(ans);
+  
 }
 
+
+
 /* ================= Notes ================== //
-  
+	
 */
-
-
 
 
 

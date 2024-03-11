@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://codeforces.com/contest/1941/problem/B
 // Print return jedna funkce (odstranit vnoreni)
 // When -> treba IsTrue
 // nahradit L, R -> tridou Range
@@ -91,7 +93,7 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) cout << a << "\n"; return 42;
+#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
 
 #define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
 #define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
@@ -756,7 +758,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool lowercase = false;
   bool show_time = false;
   
@@ -781,15 +783,25 @@ int main() {
 }
 
 int Solve() {
-  return Print("5");
+  Read(int, n);
+  auto a = ReadVector<int>(n);
+  for (int i = 1; i < n - 1; i++) {
+    int k = min({a[i - 1], a[i] / 2, a[i + 1]});
+    a[i - 1] -= k;
+    a[i] -= k * 2;
+    a[i + 1] -= k;
+  }
   
- 
+  bool all_zero = ForAll(a, When(x == 0));
+  return all_zero;
 }
 
 
 
 /* ================= Notes ================== //
-	
+	a[i - 1] -= 1
+	a[i] -= 2
+	a[i + 1] -= 1
 */
 
 
