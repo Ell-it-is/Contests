@@ -473,10 +473,33 @@ tcT void NewMin(T &first, T second) {
   first = std::min(first, second);
 }
 
-tcT T GetMin(const V<T> &v) {
+/*tcT T GetMin(const V<T> &v) {
   assert(!v.empty());
   
   return *min_element(All(v));
+}*/
+
+tcT T GetMin(V<T> &v, int k = 1) {
+  assert(Size(v) >= k);
+
+  int n = Size(v);
+  int max = *max_element(All(v));
+
+  V<int> number_exists(max + 1);
+  Each (num, v) {
+    number_exists[num] = 1;
+  }
+  
+  int kth_min = -1;
+  int cnt = 1;
+  Each (exists, number_exists, i, candidate) {
+    if (exists) cnt++;
+    if (cnt == k) {
+      kth_min = candidate;
+    }
+  }
+
+  return kth_min;
 }
 
 tcT T GetMinSecond(V<T> &v) {
@@ -500,7 +523,7 @@ tcT int GetMinPos(const V<T> &v) {
   return min_element(All(v)) - v.begin();
 }
 
-tcT void Max(T &first, T second) {
+tcT void NewMax(T &first, T second) {
   first = std::max(first, second);
 }
 
@@ -749,7 +772,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
@@ -771,8 +794,10 @@ int main() {
 }
 
 void Solve() {
-  
-  
+  V<int> a = { 4, 5, 8, 2, 6, 8, 5, 10, 18, 51, 43, 12 };
+  int kth = GetMin(a);
+
+  Print(kth);
 }
 
 
