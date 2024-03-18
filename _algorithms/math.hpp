@@ -176,3 +176,21 @@ int Phi(int n) {
   
   return k;
 }
+
+
+// ------- Get Nth number in Fibonacci sequence -------
+int NthFib(int n) {
+  int a = 0;
+  int b = 1;
+  if (n == 0) return a;
+  if (n == 1) return b;
+  
+  int c = -1;
+  Repeat (n - 1) {
+    c = a + b;
+    a = b;
+    b = c;
+  }
+  
+  return c;
+}

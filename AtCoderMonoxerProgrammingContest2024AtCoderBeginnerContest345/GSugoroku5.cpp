@@ -1,3 +1,5 @@
+// time-limit: 12000
+// problem-url: https://atcoder.jp/contests/abc345/tasks/abc345_g
 
 #include <bits/stdc++.h>
 using namespace std;

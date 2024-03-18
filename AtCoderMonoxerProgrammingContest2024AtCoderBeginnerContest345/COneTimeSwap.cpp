@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://atcoder.jp/contests/abc345/tasks/abc345_c
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -271,14 +273,14 @@ tcT T SumAll(V<T> &v) {
 }
 
 template <class T, class UnaryPredicate>
-bool ForAll(const V<T> &v, UnaryPredicate lambda) {
+bool ForAll(const T &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
   return std::all_of(All(v), lambda);
 }
 
 template <class T, class BinaryPredicate>
-bool ForAllAdj(const V<T> &v, BinaryPredicate lambda) {
+bool ForAllAdj(const T &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
   Repeat (Size(v) - 1) {
@@ -759,7 +761,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
@@ -781,8 +783,21 @@ int main() {
 }
 
 void Solve() {
+  Read(string, s);
+  int n = Size(s);
   
-  
+  auto seen = FreqMap<CI>(s);
+  int ans = 0;
+  EachPair(c, cnt, seen) {
+    if (cnt > 1) ans = 1;
+  }
+  Go (0, n - 2, i) {
+    Go (i + 1, n - 1, j) {
+      if (s[i] == s[j]) continue;
+      ans += seen[s[i]] * seen[s[j]];
+    }
+  }
+  Print(ans);
 }
 
 

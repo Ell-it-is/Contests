@@ -349,7 +349,7 @@ tcT bool Contains(const V<T> &v, T x) {
 tcT int First(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return First(v, Claim(x == t)) - v.begin();
+  return First(v, Claim(x == t));
 }
 
 int First(string &s, char c) {
@@ -397,7 +397,7 @@ int FirstAdj(const V<T> &v, BinaryPredicate lambda) {
 tcT int Last(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return Last(v, Claim(x == t)) - v.begin();
+  return Last(v, Claim(x == t));
 }
 
 int Last(string &s, char t) {
@@ -473,85 +473,72 @@ tcT void NewMin(T &first, T second) {
   first = std::min(first, second);
 }
 
-/*tcT T GetMin(const V<T> &v) {
-  assert(!v.empty());
-  
-  return *min_element(All(v));
-}*/
-
-tcT T GetMin(V<T> &v, int k = 1) {
+// returns first positon of k-th min based on order in 'v'
+int GetMinPos(V<int> &v, int k = 1) {
   assert(Size(v) >= k);
+  
+  if (k == 1) {
+    return min_element(All(v)) - v.begin();
+  }
 
-  int n = Size(v);
-  int max = *max_element(All(v));
-
+  int max_idx = max_element(All(v)) - v.begin();
+  int max = v[max_idx];
   V<int> number_exists(max + 1);
   Each (num, v) {
     number_exists[num] = 1;
   }
   
   int kth_min = -1;
-  int cnt = 1;
-  Each (exists, number_exists, i, candidate) {
+  int cnt = 0;
+  Each (exists, number_exists, candidate) {
     if (exists) cnt++;
     if (cnt == k) {
       kth_min = candidate;
+      break;
     }
   }
-
-  return kth_min;
-}
-
-tcT T GetMinSecond(V<T> &v) {
-  assert(Size(v) > 1);
-
-  int n = Size(v);
-  int min = v[0];
-  int second_min = (v[1] > min ? v[1] : -1);
-  Go (1, n - 1) {
-    if (v[i] < min) {
-      second_min = min;
-      Min(min, v[i]);
-    }
-  }
-  return second_min;
-}
-
-tcT int GetMinPos(const V<T> &v) {
-  assert(!v.empty());
   
-  return min_element(All(v)) - v.begin();
+  return First(v, kth_min);
+}
+
+tcT T GetMin(V<T> &v, int k = 1) {
+  return v[GetMinPos(v, k)];
 }
 
 tcT void NewMax(T &first, T second) {
   first = std::max(first, second);
 }
 
-tcT T GetMax(const V<T> &v) {
-  assert(!v.empty());
+// returns first positon of k-th max based on order in 'v'
+int GetMaxPos(V<int> &v, int k = 1) {
+  assert(Size(v) >= k);
+
+  int max_idx = max_element(All(v)) - v.begin();
+  if (k == 1) {
+    return max_idx;
+  }
   
-  return *max_element(All(v));
-}
-
-tcT T GetMaxSecond(V<T> &v) {
-  assert(Size(v) > 1);
-
-  int n = Size(v);
-  int max = v[0];
-  int second_max = (v[1] < max ? v[1] : -1);
-  Go (1, n - 1) {
-    if (v[i] > max) {
-      second_max = max;
-      Max(max, v[i]);
+  int max = v[max_idx];
+  V<int> number_exists(max + 1);
+  Each (num, v) {
+    number_exists[num] = 1;
+  }
+  
+  int kth_max = -1;
+  int cnt = 0;
+  EachBack (exists, number_exists, candidate) {
+    if (exists) cnt++;
+    if (cnt == k) {
+      kth_max = candidate;
+      break;
     }
   }
-  return second_max;
+  
+  return First(v, kth_max);
 }
 
-tcT int GetMaxPos(const V<T> &v) {
-  assert(!v.empty());
-  
-  return max_element(All(v)) - v.begin();
+tcT T GetMax(V<T> &v, int k = 1) {
+  return v[GetMaxPos(v, k)];
 }
 
 tcT T Avg(const V<T> &v) {
@@ -772,7 +759,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  //std::cin >> tt;
+  std::cin >> tt;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
@@ -794,10 +781,8 @@ int main() {
 }
 
 void Solve() {
-  V<int> a = { 4, 5, 8, 2, 6, 8, 5, 10, 18, 51, 43, 12 };
-  int kth = GetMin(a);
-
-  Print(kth);
+  
+  
 }
 
 

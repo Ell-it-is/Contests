@@ -1,6 +1,6 @@
 #include "../_template/template_functions.hpp"
 
-int Solve();
+void Solve();
 
 int main() {
   ios::sync_with_stdio(false);
@@ -8,16 +8,12 @@ int main() {
   
   int tt = 1;
   //std::cin >> tt;
-  bool lowercase = false;
-  bool show_time = true;
+  bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
   auto prev_time = start_time;
   while (tt--) {
-    int solution = Solve();
-    if (solution == 1) std::cout << (lowercase ? "Yes" : "YES");
-    if (solution == 0) std::cout << (lowercase ? "No" : "NO");
-    std::cout << "\n";
+    Solve();
     
     if (show_time) {
       auto end_time = chrono::high_resolution_clock::now();
@@ -28,21 +24,29 @@ int main() {
       prev_time = end_time;
     }
   }
-
+  
   return 0;
 }
 
-
-int Solve() {
-  
+void Solve() {
+  int n = 20;
+  int a = 0;
+  int b = 1;
+  Print(b);
+  Repeat (n) {
+    Print(a + b + 1);
+    int temp = a;
+    a = b;
+    b = temp + b + 1;
+  }
   
 }
 
+
+
 /* ================= Notes ================== //
-
+  
 */
-
-
 
 
 

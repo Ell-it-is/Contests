@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://atcoder.jp/contests/abc345/tasks/abc345_a
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -759,7 +761,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
@@ -781,8 +783,17 @@ int main() {
 }
 
 void Solve() {
-  
-  
+  Read(string, s);
+  int n = Size(s);
+  bool ok = true;
+  Go(1, n - 2) {
+    if (s[i] != '=') ok = false;
+  }
+  if (s.front() == '<' && s.back() == '>' && n > 2 && ok) {
+    PrintAns(true);
+  } else {
+    PrintAns(false);
+  }
 }
 
 

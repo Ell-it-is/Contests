@@ -1,3 +1,5 @@
+// time-limit: 1000
+// problem-url: https://codeforces.com/contest/1176/problem/A
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -781,8 +783,27 @@ int main() {
 }
 
 void Solve() {
+  Read(llong, n);
+  Init(llong, cnt2, cnt3, cnt5, 0);
   
-  
+  while (n % 2 == 0) {
+    n /= 2;
+    cnt2++;
+  }
+  while (n % 3 == 0) {
+    n /= 3;
+    cnt3++;
+  }
+  while (n % 5 == 0) {
+    n /= 5;
+    cnt5++;
+  }
+
+  if (n != 1) {
+    Print(-1);
+  } else {
+    Print(cnt2 + 2 * cnt3 + 3 * cnt5);
+  }
 }
 
 

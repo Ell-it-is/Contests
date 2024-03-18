@@ -1,3 +1,5 @@
+// time-limit: 2000
+// problem-url: https://atcoder.jp/contests/abc345/tasks/abc345_b
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -759,7 +761,7 @@ int main() {
   cin.tie(nullptr);
   
   int tt = 1;
-  std::cin >> tt;
+  //std::cin >> tt;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
@@ -781,8 +783,10 @@ int main() {
 }
 
 void Solve() {
-  
-  
+  Read(long double, x);
+
+  llong ans = ceill(x / 10.0);
+  Print(ans);
 }
 
 

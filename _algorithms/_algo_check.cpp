@@ -31,7 +31,7 @@ int main() {
   vector<string> math = {
     "Get divisors", "Count divisors", "Get gcd of a list of numbers",
     "Lcm (that also means implement Gcd)", "Is number a prime?", "Sieve of Eratosthenes",
-    "Prime factorization", "Euler's Totient"
+    "Prime factorization", "Euler's Totient", "Get Nth Fib number"
   };
   pick_one.insert(pick_one.end(), math.begin(), math.end());
 
@@ -45,7 +45,7 @@ int main() {
   };
   pick_one.insert(pick_one.end(), sorting.begin(), sorting.end());
 
-
+  
   int rand_idx = Rand(0, (int) pick_one.size() - 1);
   string picked = pick_one[rand_idx];
   cout << picked << "\n";

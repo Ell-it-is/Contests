@@ -7,13 +7,47 @@ auto dfs = [&](auto&& dfs, int u) -> void {
   // Says we visited vertex 'u'
   vis[u] = true;
   // Goes through all adjacent verticies of vertex 'u', let's call each 'v'
-  Each(adj[u], v, i) {
+  Each(v, adj[u], i) {
     // If vertex 'v' was not visited yet, it is a candidate for dfs of vertex 'v'
     if (!vis[v]) {
       dfs(dfs, v);
     }
   }
 };
+
+
+// ------- DFS - find cyrcle ------- 
+V<V<int>>  adj;
+V<int> vis, p;
+int cycle_start, cycle_end;
+  
+auto dfs = [&](auto&& dfs, int u) -> bool {
+  vis[u] = true;
+  Each(v, adj[u]) {
+    // if vertex 'v' is my parent, skip him
+    if (v == p[u]) continue;
+    // vertex 'v' is not my parent (parent = vertex I come from)
+    // AND vertex 'v' was visited in the past -> cyrcle detected
+    if (vis[v]) {
+      cycle_end = u;
+      cycle_start = v;
+      return true;
+    }
+    p[v] = u;
+    if (dfs(dfs, v)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+Repeat (n, i, u) {
+  // When dfs returns true, we know cyrcle was detected, so break out
+  if (!vis[u] && dfs(dfs, u)) {
+    break;
+  }
+}
+// Note: You can also display path 'cycle_start' -> 'cycle_end' thanks to 'p' info
 
 
 // ------- BASE BFS -------
@@ -30,7 +64,7 @@ while (!que.empty()) {
   int u = que.front();
   que.pop();
   
-  Each (adj[u], v) {
+  Each (v, adj[u]) {
     if (!vis[v]) {
       vis[v] = true;
       que.push(v);
@@ -56,7 +90,7 @@ while (!que.empty()) {
   int u = que.front();
   que.pop();
 
-  Each (adj[u], v) {
+  Each (v, adj[u]) {
     if (!vis[v]) {
       vis[v] = true;
       que.push(v);
@@ -100,7 +134,7 @@ while (!que.empty()) {
   int u = que.front();
   que.pop();
 
-  Each (adj[u], v) {
+  Each (v, adj[u]) {
     if (!vis[v]) {
       vis[v] = true;
       que.push(v);

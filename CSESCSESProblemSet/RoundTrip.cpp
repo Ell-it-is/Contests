@@ -54,35 +54,35 @@ const int dy[4] = { 0, 1, 0, -1 };
 // Loops
 #define Repeat3(cnt, i, pos) for (auto&& [i, pos] = std::tuple { 0, 1 }; i < cnt; i++, pos++)
 #define Repeat2(cnt, i) Repeat3(cnt, i, pos)
+#define Repeat1(cnt) Repeat3(cnt, i, pos)
 
 #define RepeatBack3(cnt, i, pos) for (auto&& [i, pos] = std::tuple {cnt - 1, cnt}; i >= 0; i--, pos--)
 #define RepeatBack2(cnt, i) RepeatBack3(cnt, i, pos)
+#define RepeatBack1(cnt) RepeatBack3(cnt, i, pos)
 
-#define Go6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from <= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it < x.begin() + to + 1; ++it, ++i, ++pos, val = (it < x.begin() + to + 1 ? x[i] : val))
-#define Go5(from, to, x, val, i) Go6(from, to, x, val, i, pos)
 #define Go4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i <= to; i++, pos++)
 #define Go3(from, to, i) Go4(from, to, i, pos)
+#define Go2(from, to) Go4(from, to, i, pos)
 
-#define GoBack6(from, to, x, val, i, pos) if (IsValid(x, from) && IsValid(x, to) && from >= to) for (auto&& [it, val, i, pos] = std::tuple{x.begin() + from, x[from], from, from + 1}; it != x.begin() + to; --it, --i, --pos, val = (it != x.begin() + to ? x[i] : val))
-#define GoBack5(from, to, x, val, i) GoBack6(from, to, x, val, i, pos)
 #define GoBack4(from, to, i, pos) for (auto&& [i, pos] = std::tuple{from, from + 1}; i >= to; i--, pos--)
 #define GoBack3(from, to, i) GoBack4(from, to, i, pos)
+#define GoBack2(from, to) GoBack4(from, to, i, pos)
 
-#define Each4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
-#define Each3(x, val, i) Each4(x, val, i, pos)
-#define Each2(x, i) Each4(x, val, i, pos)
+#define Each4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.begin(), *x.begin(), 0, 1}; it != x.end(); ++it, ++i, ++pos, val = (it != x.end() ? (*it) : val))
+#define Each3(val, x, i) Each4(val, x, i, pos)
+#define Each2(val, x) Each4(val, x, i, pos)
 
-#define EachBack4(x, val, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
-#define EachBack3(x, val, i) EachBack4(x, val, i, pos)
-#define EachBack2(x, i) EachBack4(x, val, i, pos)
+#define EachBack4(val, x, i, pos) if (Size(x) > 0) for (auto&& [it, val, i, pos] = std::tuple{x.rbegin(), *x.rbegin(), Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, val = (it != x.rend() ? (*it) : val))
+#define EachBack3(val, x, i) EachBack4(val, x, i, pos)
+#define EachBack2(val, x) EachBack4(val, x, i, pos)
 
-#define EachPair5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
-#define EachPair4(x, key, val, i) EachPair5(x, key, val, i, pos)
-#define EachPair2(x, i) EachPair4(x, key, val, i)
+#define EachPair5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.begin(), x.begin()->first, x.begin()->second, 0, 1}; it != x.end(); ++it, ++i, ++pos, key = (it != x.end() ? it->first : key), val = (it != x.end() ? it->second : val))
+#define EachPair4(key, val, x, i) EachPair5(key, val, x, i, pos)
+#define EachPair3(key, val, x) EachPair5(key, val, x, i, pos)
 
-#define EachPairBack5(x, key, val, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
-#define EachPairBack4(x, key, val, i) EachPairBack5(x, key, val, i, pos)
-#define EachPairBack2(x, i) EachPairBack4(x, key, val, i)
+#define EachPairBack5(key, val, x, i, pos) if (Size(x) > 0) for (auto&& [it, key, val, i, pos] = std::tuple {x.rbegin(), x.rbegin()->first, x.rbegin()->second, Size(x) - 1, Size(x)}; it != x.rend(); ++it, --i, --pos, key = (it != x.rend() ? it->first : key), val = (it != x.rend() ? it->second : val))
+#define EachPairBack4(key, val, x, i) EachPairBack5(key, val, x, i, pos)
+#define EachPairBack3(key, val, x) EachPairBack5(key, val, x, i, pos)
 
 #define Init4(T, a, b, val) T a, b; a = val; b = val;
 #define Init5(T, a, b, c, val) T a, b, c; a = val; b = val; c = val;
@@ -95,19 +95,21 @@ const int dy[4] = { 0, 1, 0, -1 };
 #define Read5(T, a, b, c, d) T a, b, c, d; cin >> a >> b >> c >> d;
 
 // Output (basic types)
-#define Print1(a) PrintReturn(WhenVoid(cout << a << "\n";));
+#define Print1(a) cout << a << "\n";
+#define Print2(a, b) cout << a << b << "\n";
+#define Print3(a, b, c) cout << a << b << c << "\n";
+#define Print4(a, b, c, d) cout << a << b << c << d << "\n";
 
-#define Print2(a, b) PrintReturn(WhenVoid(cout << a << b << "\n";));
-#define Print3(a, b, c) PrintReturn(WhenVoid(cout << a << b << c << "\n";));
-#define Print4(a, b, c, d) PrintReturn(WhenVoid(cout << a << b << c << d << "\n";));
+#define PrintAns(a) cout << (a ? "Yes" : "No") << "\n";
+#define PrintAnsCaps(a) cout << (a ? "YES" : "NO") << "\n";
 
-#define PrintSp2(a, b) PrintReturn(WhenVoid(cout << a << " " << b << "\n";));
-#define PrintSp3(a, b, c) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << "\n";));
-#define PrintSp4(a, b, c, d) PrintReturn(WhenVoid(cout << a << " " << b << " " << c << " " << d << "\n";));
+#define PrintSp2(a, b) cout << a << " " << b << "\n";
+#define PrintSp3(a, b, c) cout << a << " " << b << " " << c << "\n";
+#define PrintSp4(a, b, c, d) cout << a << " " << b << " " << c << " " << d << "\n";
 
-#define PrintN2(a, b) PrintReturn(WhenVoid(cout << a << "\n" << b << "\n";));
-#define PrintN3(a, b, c) PrintReturn(WhenVoid(cout << a << "\n" << b << "\n" << c << "\n";));
-#define PrintN4(a, b, c, d) PrintReturn(WhenVoid(cout << a << "\n" << b << "\n" << c << "\n" << d << "\n";));
+#define PrintN2(a, b) cout << a << "\n" << b << "\n";
+#define PrintN3(a, b, c) cout << a << "\n" << b << "\n" << c << "\n";
+#define PrintN4(a, b, c, d) cout << a << "\n" << b << "\n" << c << "\n" << d << "\n";
 
 // Data structures
 tcT using V = vector<T>;
@@ -140,6 +142,16 @@ tcT using ST = stack<T>;
 #define DL double, llong
 #define LD llong, double
 
+#define CC char, char
+#define CI char, int
+#define IC int, char
+#define CS char, string
+#define SC string, char
+#define CD char, double
+#define DC double, char
+#define CL char, llong
+#define LC llong, char
+
 #define PI pair<int, int>
 
 #define PS pair<string, string>
@@ -160,6 +172,16 @@ tcT using ST = stack<T>;
 #define PDL pair<double, llong>
 #define PLD pair<llong, double>
 
+#define PCC pair<char, char>
+#define PCI pair<char, int>
+#define PIC pair<int, char>
+#define PCS pair<char, string>
+#define PSC pair<string, char>
+#define PCD pair<char, double>
+#define PDC pair<double, char>
+#define PCL pair<char, llong>
+#define PLC pair<llong, char>
+
 
 // Shortcuts of cpp code
 #define pb push_back
@@ -172,15 +194,15 @@ tcT using ST = stack<T>;
 #define Size(x) (int) x.size()
 #define All(x) x.begin(), x.end()
 #define Rall(x) x.rbegin(), x.rend()
-#define At(x) [x.first][x.second]
+#define At(x) [x.first][x.second] 
 #define Pair(x) { x.first, x.second }
-#define When(f) [&](auto x) { return f; }
-#define WhenAdj(f) [&](auto x, auto y) { return f; }
-#define WhenVoid(f) [&]() { f; }
+#define Claim(f) [&](auto x) { return f; }
+#define ClaimAdj(f) [&](auto x, auto y) { return f; }
+#define Do(f) [&]() { f; }
 
-int ToNum(char c) { return int(c - '0'); }
-char ToChar(int num) { return char(num + '0'); }
-int ToNum(string s) { return stoi(s); }
+int LetterToInt(char c) { return int(c - 'a'); }
+int DigitToInt(char c) { return int(c - '0'); }
+char DigitToChar(int num) { return char(num + '0'); }
 string ToBString(int num) {
   string bstring;
   while (num > 0) {
@@ -191,9 +213,10 @@ string ToBString(int num) {
 }
 int FromBstring(string bstring) { return stoi(bstring, nullptr, 2); }
 
+tcT T Parity(T x) { return x % 2; }
 tcT bool Odd(T x) { return x % 2 != 0; }
 tcT bool Even(T x) { return x % 2 == 0; }
-tcT T Parity(T x) { return x % 2; }
+tcT bool Divides(T div, T n) { return n % div == 0; } // div | n
 tcT T Pairs(T n) { return n * (n - 1) / 2; }
 tcT T SumN(T n) { return n * (n + 1) / 2; }
 tcT T SumSq(T n) { return n * (n + 1) * (2 * n + 1) / 6; }
@@ -211,14 +234,6 @@ void ToLower(string &s) {
   transform(All(s), s.begin(), ::tolower);
 }
 
-bool IsPalindrome(string &s) {
-  int n = Size(s);
-  Repeat (n / 2, i) {
-    if (s[i] != s[n - 1 - i]) return false;
-  }
-  return true;
-}
-
 // Vector
 tcT V<T> Psum(V<T> &v) {
   assert(!v.empty());
@@ -226,7 +241,7 @@ tcT V<T> Psum(V<T> &v) {
   int n = Size(v);
   V<T> psum(n);
   psum[0] = v[0];
-  Go (1, n - 1, i) {
+  Go (1, n - 1) {
     psum[i] = psum[i - 1] + v[i];
   }
   return psum;
@@ -238,7 +253,7 @@ tcT V<T> Ssum(V<T> &v) {
   int n = Size(v);
   V<T> ssum(n);
   ssum[n - 1] = v[n - 1];
-  RepeatBack (n - 1, i) {
+  RepeatBack (n - 1) {
     ssum[i] = ssum[i + 1] + v[i];
   }
   return ssum;
@@ -257,8 +272,8 @@ tcT T SumAll(V<T> &v) {
   return accumulate(All(v), T(0));
 }
 
-template <class T, class BinaryPredicate>
-bool ForAll(const V<T> &v, BinaryPredicate lambda) {
+template <class T, class UnaryPredicate>
+bool ForAll(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
   return std::all_of(All(v), lambda);
@@ -268,7 +283,7 @@ template <class T, class BinaryPredicate>
 bool ForAllAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1, i) {
+  Repeat (Size(v) - 1) {
     if (!lambda(v[i], v[i + 1]))
       return false;
   }
@@ -286,7 +301,7 @@ template<class T, class BinaryPredicate>
 bool ForAnyAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1, i) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1]))
       return true;
   }
@@ -304,7 +319,7 @@ template<class T, class BinaryPredicate>
 bool ForNoneAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Repeat (Size(v) - 1, i) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1]))
       return false;
   }
@@ -312,30 +327,22 @@ bool ForNoneAdj(const V<T> &v, BinaryPredicate lambda) {
 }
 
 tcT bool Asc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return ForNoneAdj(v, WhenAdj(x >= y));
+  return ForNoneAdj(v, ClaimAdj(x >= y));
 }
 
 tcT bool NonAsc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return ForNoneAdj(v, WhenAdj(x < y));
+  return ForNoneAdj(v, ClaimAdj(x < y));
 }
 
 tcT bool Desc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return ForNoneAdj(v, WhenAdj(x <= y));
+  return ForNoneAdj(v, ClaimAdj(x <= y));
 }
 
 tcT bool NonDesc(const V<T> &v) {
-  assert(!v.empty());
-  
-  return ForNoneAdj(v, WhenAdj(x > y));
+  return ForNoneAdj(v, ClaimAdj(x > y));
 }
 
-tcT bool Found(const V<T> &v, T x) {
+tcT bool Contains(const V<T> &v, T x) {
   assert(!v.empty());
   
   return std::find(All(v), x) != v.end();
@@ -344,13 +351,13 @@ tcT bool Found(const V<T> &v, T x) {
 tcT int First(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return First(v, When(x == t)) - v.begin();
+  return First(v, Claim(x == t));
 }
 
 int First(string &s, char c) {
   assert(!s.empty());
   
-  Each (s, i) {
+  Each (c, s) {
     if (s[i] == c) return i;
   }
   return -1;
@@ -363,7 +370,7 @@ int First(string &s, string t) {
   int m = Size(t);
   assert(m <= n);
   
-  Repeat (n - m + 1, i) {
+  Repeat (n - m + 1) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -380,24 +387,25 @@ template<class T, class BinaryPredicate>
 int FirstAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  Each(v, i) {
+  Each(num, v) {
     if (lambda(v[i], v[i + 1])) {
       return i;
     }
   }
+  
   return Size(v);
 }
 
 tcT int Last(const V<T> &v, T t) {
   assert(!v.empty());
   
-  return Last(v, When(x == t)) - v.begin();
+  return Last(v, Claim(x == t));
 }
 
 int Last(string &s, char t) {
   assert(!s.empty());
   
-  EachBack (s, c, i) {
+  EachBack (c, s, i) {
     if (c == t) return i;
   }
   return -1;
@@ -409,7 +417,7 @@ int Last(string &s, string t) {
   int n = Size(s);
   int m = Size(t);
   assert(m <= n);
-  RepeatBack (n - m + 1, i) {
+  RepeatBack (n - m + 1) {
     if (s.substr(i, m) == t) return i;
   }
   return -1;
@@ -419,8 +427,8 @@ template<class T, class UnaryPredicate>
 int Last(const V<T> &v, UnaryPredicate lambda) {
   assert(!v.empty());
   
-  EachBack (v, i) {
-    if (lambda(v[i])) {
+  EachBack (num, v) {
+    if (lambda(num)) {
       return i;
     }
   }
@@ -431,7 +439,7 @@ template<class T, class BinaryPredicate>
 int LastAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
-  GoBack (Size(v) - 1, 1, i) {
+  GoBack (Size(v) - 1, 1) {
     if (lambda(v[i - 1], v[i])) {
       return i;
     }
@@ -457,72 +465,82 @@ int CountAdj(const V<T> &v, BinaryPredicate lambda) {
   assert(!v.empty());
   
   int cnt = 0;
-  Repeat (Size(v) - 1, i) {
+  Repeat (Size(v) - 1) {
     if (lambda(v[i], v[i + 1])) cnt++;
   }
   return cnt;
 }
 
-tcT void Min(T &first, T second) {
+tcT void NewMin(T &first, T second) {
   first = std::min(first, second);
 }
 
-tcT T GetMin(const V<T> &v) {
-  assert(!v.empty());
+// returns first positon of k-th min based on order in 'v'
+int GetMinPos(V<int> &v, int k = 1) {
+  assert(Size(v) >= k);
   
-  return *min_element(All(v));
-}
+  if (k == 1) {
+    return min_element(All(v)) - v.begin();
+  }
 
-tcT T GetMinSecond(V<T> &v) {
-  assert(Size(v) > 1);
-
-  int n = Size(v);
-  int min = v[0];
-  int second_min = (v[1] > min ? v[1] : -1);
-  Go (1, n - 1, i) {
-    if (v[i] < min) {
-      second_min = min;
-      Min(min, v[i]);
+  int max_idx = max_element(All(v)) - v.begin();
+  int max = v[max_idx];
+  V<int> number_exists(max + 1);
+  Each (num, v) {
+    number_exists[num] = 1;
+  }
+  
+  int kth_min = -1;
+  int cnt = 0;
+  Each (exists, number_exists, candidate) {
+    if (exists) cnt++;
+    if (cnt == k) {
+      kth_min = candidate;
+      break;
     }
   }
-  return second_min;
-}
-
-tcT int GetMinPos(const V<T> &v) {
-  assert(!v.empty());
   
-  return min_element(All(v)) - v.begin();
+  return First(v, kth_min);
 }
 
-tcT void Max(T &first, T second) {
+tcT T GetMin(V<T> &v, int k = 1) {
+  return v[GetMinPos(v, k)];
+}
+
+tcT void NewMax(T &first, T second) {
   first = std::max(first, second);
 }
 
-tcT T GetMax(const V<T> &v) {
-  assert(!v.empty());
+// returns first positon of k-th max based on order in 'v'
+int GetMaxPos(V<int> &v, int k = 1) {
+  assert(Size(v) >= k);
+
+  int max_idx = max_element(All(v)) - v.begin();
+  if (k == 1) {
+    return max_idx;
+  }
   
-  return *max_element(All(v));
-}
-
-tcT T GetMaxSecond(V<T> &v) {
-  assert(Size(v) > 1);
-
-  int n = Size(v);
-  int max = v[0];
-  int second_max = (v[1] < max ? v[1] : -1);
-  Go (1, n - 1, i) {
-    if (v[i] > max) {
-      second_max = max;
-      Max(max, v[i]);
+  int max = v[max_idx];
+  V<int> number_exists(max + 1);
+  Each (num, v) {
+    number_exists[num] = 1;
+  }
+  
+  int kth_max = -1;
+  int cnt = 0;
+  EachBack (exists, number_exists, candidate) {
+    if (exists) cnt++;
+    if (cnt == k) {
+      kth_max = candidate;
+      break;
     }
   }
-  return second_max;
+  
+  return First(v, kth_max);
 }
 
-tcT int GetMaxPos(const V<T> &v) {
-  assert(!v.empty());
-  
-  return max_element(All(v)) - v.begin();
+tcT T GetMax(V<T> &v, int k = 1) {
+  return v[GetMaxPos(v, k)];
 }
 
 tcT T Avg(const V<T> &v) {
@@ -534,47 +552,34 @@ tcT T Avg(const V<T> &v) {
 }
 
 tcT int Unique(T &v) {
-  assert(!v.empty());
-  
   sort(All(v));
   v.resize(unique(All(v)) - v.begin());
+  
   return Size(v);
 }
 
-tcT void RotateLeft(T &v) { assert(!v.empty()); std::rotate(v.begin(), v.begin() + 1, v.end()); }
-tcT void RotateLeft(T &v, int k) { assert(!v.empty()); std::rotate(v.begin(), v.begin() + k, v.end()); }
-tcT void RotateRight(T &v) { assert(!v.empty()); std::rotate(v.rbegin(), v.rbegin() + 1, v.rend()); }
-tcT void RotateRight(T &v, int k) { assert(!v.empty()); std::rotate(v.rbegin(), v.rbegin() + k, v.rend()); }
-void Rotate(std::vector<int>& v, int left, int right, int moves) {
+tcT void RotateLeft(T &v, int k = 1) {
   assert(!v.empty());
   
-  if (left > right || moves == 0) return;
-
-  int subarray_size = right - left + 1;
-  moves %= subarray_size;
-  if (moves == 0) return;
-
-  int shift_right = (moves > 0);
-  if (shift_right) {
-    moves = subarray_size - moves;
-  } else {
-    moves = -moves;
-  }
-
-  std::reverse(v.begin() + left, v.begin() + left + moves);
-  std::reverse(v.begin() + left + moves, v.begin() + right + 1);
-  std::reverse(v.begin() + left, v.begin() + right + 1);
+  rotate(v.begin(), v.begin() + k, v.end());
 }
 
-template<class T> bool IsValid(T &v, int idx) {
+tcT void RotateRight(T &v, int k = 1) {
+  assert(!v.empty());
+  
+  rotate(v.rbegin(), v.rbegin() + k, v.rend());
+}
+
+tcT bool IsValid(T &v, int idx) {
   assert(!v.empty());
   
   return (idx >= 0 && idx < Size(v));
 }
 
+
 // Vector pairs
 
-// 2D vector
+// Matrix
 tcT PI Dimensions(V<V<T>> &t) {
   assert(!t.empty());
 
@@ -591,22 +596,21 @@ PI Dimensions(V<string> &t) {
   return { n, m };
 }
 
-template<class T, class U> bool IsValid(T &t, U x, U y) {
+template<class T, class U>
+bool IsValid(T &t, U x, U y) {
   assert(!t.empty());
   
   auto [n, m] = Dimensions(t);
-  if (n == 0) return false;
-
   return (x >= 0 && x < n && y >= 0 && y < m);
 }
 
 // Map
-tcTU bool KeyFound(M<T, U> &m, T key) {
+tcTU bool Contains(M<T, U> &m, T key) {
   return m.find(key) != m.end();
 }
 
 // Multimap
-tcTU bool KeyFound(MM<T, U> &mm, T key) {
+tcTU bool Contains(MM<T, U> &mm, T key) {
   return mm.find(key) != mm.end();
 }
 
@@ -614,26 +618,27 @@ tcTU bool KeyFound(MM<T, U> &mm, T key) {
 // Vector
 tcT auto ReadVector(int n) {
   V<T> x(n);
-  Repeat (n, i) cin >> x[i];
+  Repeat (n) cin >> x[i];
   return x;
 }
 
 tcT auto ReadPairs(int n) {
   V<T> x(n);
-  Repeat (n, i) cin >> x[i].first >> x[i].second;
+  Repeat (n) cin >> x[i].first >> x[i].second;
   return x;
 }
 
 // Map
-template<class T, class U, class Z> auto MakeMap(Z &v) {
+template<class T, class U, class Z>
+auto FreqMap(Z &x) {
   M<T, U> m;
-  Each(v, i) m[v[i]]++;
+  Each(num, x) m[num]++;
   return m;
 }
 
-// 2D array
-tcT auto Read2D(T n, T m) {
-  auto t = Make2D(n, m);
+// Matrix
+tcT auto ReadMatrix(T n, T m) {
+  auto t = MakeMatrix(n, m);
   Repeat (n, i) {
     Repeat (m, j) {
       cin >> t[i][j];
@@ -642,24 +647,24 @@ tcT auto Read2D(T n, T m) {
   return t;
 }
 
-tcT auto Make2D(T n) {
+tcT auto MakeMatrix(T n) {
   V<V<T>> t(n);
   return t;
 }
 
-tcT auto Make2D(T n, T m) {
+tcT auto MakeMatrix(T n, T m) {
   V<V<T>> t(n, V<T>(m));
   return t;
 }
 
-tcT auto Make2D(T n, T m, T def) {
+tcT auto MakeMatrix(T n, T m, T def) {
   V<V<T>> t(n, V<T>(m, def));
   return t;
 }
 
 tcT auto ReadAdjList(T n, T m) {
-  auto adj_list = Make2D(n);
-  Repeat (m, i) {
+  auto adj_list = MakeMatrix(n);
+  Repeat (m) {
     Read(int, a, b);
     adj_list[a].pb(b);
     adj_list[b].pb(a);
@@ -668,82 +673,70 @@ tcT auto ReadAdjList(T n, T m) {
 }
 
 // --OUTPUT--
-int PrintReturn(std::function<void()> lambda) {
-  lambda();
-  
-  return 42;
-}
-
 // Vector
-tcT int PrintVector(V<T> &v, int from = -1, int to = -1) {
+tcT void PrintVector(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
   if (from != -1) assert(IsValid(v, from));
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) cout << v[i];
+    Each (num, v) cout << num;
   } else if (from == -1) {
-    Go (from, n - 1, i) cout << v[i];
+    Go (from, n - 1) cout << v[i];
   } else {
-    Go (from, to, i) cout << v[i];
+    Go (from, to) cout << v[i];
   }
   
   cout << "\n";
-  return 42;
 }
 
-tcT int PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
+tcT void PrintVectorSp(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
   if (from != -1) assert(IsValid(v, from));
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) cout << v[i] << " ";
+    Each (num, v) cout << num << " ";
   } else if (from == -1) {
-    Go (from, n - 1, i) cout << v[i] << " ";
+    Go (from, n - 1) cout << v[i] << " ";
   } else {
-    Go (from, to, i) cout << v[i] << " ";
+    Go (from, to) cout << v[i] << " ";
   }
   
   cout << "\n";
-  return 42;
 }
 
-tcT int PrintVectorN(V<T> &v, int from = -1, int to = -1) {
+tcT void PrintVectorN(V<T> &v, int from = -1, int to = -1) {
   int n = Size(v);
   if (from != -1) assert(IsValid(v, from));
   if (to != -1) assert(IsValid(v, to));
   
   if (from == -1 && to == -1) {
-    Each (v, i) Print(v[i]);
+    Each (num, v) Print(num);
   } else if (from == -1) {
-    Go (from, n - 1, i) Print(v[i]);
+    Go (from, n - 1) Print(v[i]);
   } else {
-    Go (from, to, i) Print(v[i]);
+    Go (from, to) Print(v[i]);
   }
-
-  return 42;
 }
 
 // Vector pairs
-tcT int PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
+tcT void PrintPairs(V<pair<T, T>> &v, int from = -1, int to = -1) {
   int n = Size(v);
   if (from != -1) assert(IsValid(v, from));
   if (to != -1) assert(IsValid(v, to));
 
   if (from == -1 && to == -1) {
-    EachPair (v, i) PrintSp(key, val);
+    EachPair (key, val, v) PrintSp(key, val);
   } else if (from == -1) {
-    Go (from, n - 1, i) PrintSp(v[i].fi, v[i].se);
+    Go (from, n - 1) PrintSp(v[i].fi, v[i].se);
   } else {
-    Go (from, to, i) PrintSp(v[i].fi, v[i].se);
+    Go (from, to) PrintSp(v[i].fi, v[i].se);
   }
-  
-  return 42;
 }
 
-// 2D array
-tcT int Print2D(V<V<T>> &t) {
+// Matrix
+tcT void PrintMatrix(V<V<T>> &t) {
   auto [n, m] = Dimensions(t);
   Repeat (n, i) {
     Repeat (m, j) {
@@ -751,21 +744,17 @@ tcT int Print2D(V<V<T>> &t) {
     }
     cout << "\n";
   }
-
-  return 42;
 }
 
 // Map
-tcTU int PrintMap(M<T, U> m) {
-  EachPair (m, i) {
+tcTU void PrintMap(M<T, U> m) {
+  EachPair (key, val, m) {
     cout << key << " " << val << "\n";
   }
-
-  return 42;
 }
 
 
-int Solve();
+void Solve();
 
 int main() {
   ios::sync_with_stdio(false);
@@ -773,15 +762,12 @@ int main() {
   
   int tt = 1;
   //std::cin >> tt;
-  bool lowercase = false;
   bool show_time = false;
   
   auto start_time = chrono::high_resolution_clock::now();
   auto prev_time = start_time;
   while (tt--) {
-    int solution = Solve();
-    if (solution == 1) std::cout << (lowercase ? "Yes" : "YES") << "\n";
-    if (solution == 0) std::cout << (lowercase ? "No" : "NO") << "\n";
+    Solve();
     
     if (show_time) {
       auto end_time = chrono::high_resolution_clock::now();
@@ -796,55 +782,62 @@ int main() {
   return 0;
 }
 
-
-int Solve() {
+void Solve() {
   Read(int, n, m);
   auto adj = ReadAdjList<int>(n + 1, m);
 
-  int origin = -1;
-  bool found = false;
-  auto dfs = [&](auto&& dfs, int u, V<int> &vis, ST<int> &st) -> void {
-    if (found) return;
+  V<int> vis(n + 1);
+  V<int> p(n + 1, -1);
+  Init(int, cycle_start, cycle_end, -1);
+  
+  auto dfs = [&](auto&& dfs, int u) -> bool {
     vis[u] = true;
-    st.push(u);
-    Each (adj[u], v, i) {
-      if (!vis[v]) {
-        dfs(dfs, v, vis, st);
-      } else {
-        if (v == origin && Size(st) > 2 && !found) {
-          st.push(v);
-          found = true;
-          return;
-        }
+    Each(v, adj[u]) {
+      // if vertex is my parent, skip him
+      if (v == p[u]) continue;
+      if (vis[v]) {
+        cycle_end = u;
+        cycle_start = v;
+        return true;
+      }
+      p[v] = u;
+      if (dfs(dfs, v)) {
+        return true;
       }
     }
+    return false;
   };
 
   Repeat (n, i, u) {
-    V<int> vis(n + 1);
-    ST<int> st;
-    origin = u;
-    found = false;
-    dfs(dfs, u, vis, st);
-    if (Size(st) > 3 && found) {
-      V<int> path;
-      while (!st.empty()) {
-        path.pb(st.top());
-        st.pop();
-      }
-      Print(Size(path));
-      return PrintVectorSp(path);
+    if (!vis[u] && dfs(dfs, u)) {
+      break;
     }
   }
 
-  return Print("IMPOSSIBLE");
+  if (cycle_start == -1) {
+    Print("IMPOSSIBLE");
+    return;
+  }
+
+  V<int> cycle;
+  cycle.pb(cycle_start);
+  int u = cycle_end;
+  while (u != cycle_start) {
+    cycle.pb(u);
+    u = p[u];
+  }
+  cycle.pb(cycle_start);
+
+  Print(Size(cycle));
+  PrintVectorSp(cycle);
 }
 
 
 
 /* ================= Notes ================== //
-   
+	
 */
+
 
 
 
